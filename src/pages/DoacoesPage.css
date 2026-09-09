@@ -1,0 +1,133 @@
+.giving-hero {
+  padding-top: 180px;
+  padding-bottom: 64px;
+}
+
+@media (max-width: 640px) {
+  .giving-hero {
+    padding-top: 150px;
+  }
+}
+
+.giving-hero__title {
+  margin-top: 24px;
+  font-size: clamp(32px, 5vw, 56px);
+  text-transform: uppercase;
+  max-width: 18ch;
+}
+
+.giving-hero__text {
+  margin-top: 28px;
+  font-size: 18px;
+  color: var(--text-secondary);
+  max-width: 56ch;
+  font-weight: 300;
+}
+
+.giving-channel__grid {
+  display: grid;
+  gap: 48px;
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .giving-channel__grid {
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 80px;
+  }
+
+  .giving-channel__grid.is-reversed {
+    grid-template-columns: 0.85fr 1.15fr;
+  }
+
+  .giving-channel__grid.is-reversed .giving-channel__copy {
+    order: 2;
+  }
+
+  .giving-channel__grid.is-reversed .giving-channel__qr-wrap {
+    order: 1;
+  }
+}
+
+.giving-channel__eyebrow {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+  margin-bottom: 16px;
+}
+
+.giving-channel__title {
+  font-size: clamp(30px, 4vw, 44px);
+  text-transform: uppercase;
+}
+
+.giving-channel__text {
+  margin-top: 20px;
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  font-weight: 300;
+  max-width: 46ch;
+}
+
+.giving-channel__pix {
+  margin-top: 36px;
+}
+
+.giving-channel__pix-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-nav);
+}
+
+.giving-channel__pix-row {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+}
+
+.giving-channel__pix-key {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  color: var(--text-primary);
+  user-select: all;
+  word-break: break-all;
+}
+
+.giving-channel__copy-btn {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  padding: 8px 16px;
+  transition: border-color var(--duration-fast) var(--ease-premium),
+    color var(--duration-fast) var(--ease-premium);
+}
+
+.giving-channel__copy-btn:hover {
+  border-color: var(--gold);
+}
+
+.giving-channel__qr-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+.giving-channel__qr-card {
+  display: inline-flex;
+  padding: 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: 16px;
+  color: var(--text-primary);
+}

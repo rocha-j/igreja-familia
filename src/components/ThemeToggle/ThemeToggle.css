@@ -1,0 +1,13 @@
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  transition: background-color var(--duration-fast) var(--ease-premium);
+}
+
+.theme-toggle:hover {
+  background: rgba(240, 192, 64, 0.08);
+}

@@ -1,0 +1,97 @@
+.network-card {
+  height: 100%;
+}
+
+.network-card__link {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  height: 100%;
+  padding: 36px 28px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: transform var(--duration-fast) var(--ease-premium),
+    border-color var(--duration-fast) var(--ease-premium);
+}
+
+.network-card__link:hover {
+  transform: translateY(-6px);
+  border-color: var(--gold);
+}
+
+.network-card__icon-wrap {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.network-card__ping {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--gold);
+}
+
+.network-card__icon {
+  position: relative;
+  z-index: 1;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-primary);
+  color: var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--duration-fast) var(--ease-premium),
+    border-color var(--duration-fast) var(--ease-premium);
+}
+
+.network-card__link:hover .network-card__icon {
+  transform: scale(1.08) rotate(-6deg);
+  border-color: var(--gold);
+}
+
+.network-card__name {
+  margin-top: 24px;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.network-card__tagline {
+  margin-top: 8px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  font-weight: 300;
+  line-height: 1.5;
+}
+
+.network-card__arrow {
+  margin-top: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--border-strong);
+  color: var(--text-nav);
+  transition: transform var(--duration-fast) var(--ease-premium),
+    color var(--duration-fast) var(--ease-premium),
+    border-color var(--duration-fast) var(--ease-premium);
+}
+
+.network-card__link:hover .network-card__arrow {
+  transform: translateX(4px);
+  color: var(--gold);
+  border-color: var(--gold);
+}

@@ -1,0 +1,139 @@
+.pillars {
+  margin-top: 96px;
+  display: grid;
+  gap: 40px;
+}
+
+@media (min-width: 900px) {
+  .pillars {
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: 64px;
+    align-items: start;
+  }
+}
+
+.pillars__tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pillars__tab {
+  text-align: left;
+  padding: 22px 4px;
+  border-top: 1px solid var(--border-default);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: relative;
+  transition: opacity var(--duration-fast) var(--ease-premium);
+  opacity: 0.55;
+}
+
+.pillars__tab:last-child {
+  border-bottom: 1px solid var(--border-default);
+}
+
+.pillars__tab.is-active {
+  opacity: 1;
+}
+
+.pillars__tab:hover {
+  opacity: 0.85;
+}
+
+.pillars__tab.is-active:hover {
+  opacity: 1;
+}
+
+.pillars__tab-word {
+  font-family: var(--font-display);
+  font-size: clamp(26px, 3.2vw, 36px);
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  transition: color var(--duration-fast) var(--ease-premium);
+}
+
+.pillars__tab.is-active .pillars__tab-word {
+  color: var(--gold);
+}
+
+.pillars__tab-subtitle {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-nav);
+}
+
+.pillars__tab-track {
+  margin-top: 8px;
+  height: 2px;
+  width: 100%;
+  background: transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+.pillars__tab-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: var(--gold);
+  display: block;
+}
+
+.pillars__display {
+  position: relative;
+  min-height: 360px;
+  padding-bottom: 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.pillars__watermark {
+  position: absolute;
+  bottom: -0.2em;
+  left: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(40px, 9vw, 88px);
+  text-transform: uppercase;
+  color: var(--text-primary);
+  opacity: 0.05;
+  white-space: nowrap;
+  pointer-events: none;
+  line-height: 1;
+  z-index: 0;
+}
+
+.pillars__panel {
+  position: relative;
+  z-index: 1;
+  max-width: 52ch;
+}
+
+.pillars__panel-index {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: var(--gold);
+}
+
+.pillars__panel-text {
+  margin-top: 18px;
+  font-size: clamp(18px, 2.2vw, 22px);
+  line-height: 1.6;
+  color: var(--text-secondary);
+  font-weight: 300;
+}
+
+@media (max-width: 640px) {
+  .pillars__display {
+    min-height: 220px;
+  }
+}

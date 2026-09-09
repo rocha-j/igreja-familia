@@ -1,0 +1,86 @@
+.scroll-progress {
+  position: fixed;
+  right: 32px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 40;
+  display: none;
+  align-items: center;
+  gap: 16px;
+}
+
+@media (min-width: 1280px) {
+  .scroll-progress {
+    display: flex;
+  }
+}
+
+.scroll-progress__track {
+  position: relative;
+  width: 1px;
+  height: 220px;
+  background: var(--border-default);
+}
+
+.scroll-progress__fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: var(--gold);
+  transition: height 0.15s linear;
+}
+
+.scroll-progress__marker {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 50%);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--bg-primary);
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scroll-progress__marker-icon {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+  transition: transform 0.2s linear;
+}
+
+.scroll-progress__list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.scroll-progress__list a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--text-nav);
+  opacity: 0.5;
+  transition: opacity var(--duration-fast) var(--ease-premium), color var(--duration-fast) var(--ease-premium);
+}
+
+.scroll-progress__list li.is-active a {
+  opacity: 1;
+  color: var(--gold);
+}
+
+.scroll-progress__list a:hover {
+  opacity: 0.85;
+}
+
+.scroll-progress__title {
+  white-space: nowrap;
+}

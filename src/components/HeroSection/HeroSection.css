@@ -1,0 +1,139 @@
+.hero {
+  /* The Hero photo is always a dark background regardless of site theme,
+     so its content locks to the dark-on-photo treatment instead of following
+     the theme tokens (which would go dark/muted in light mode and disappear). */
+  --text-primary: #ffffff;
+  --border-strong: rgba(255, 255, 255, 0.4);
+  --gold: #f0c040;
+  --gold-hover: #e0b030;
+
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background: #050505;
+}
+
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  background-image: url('https://images.unsplash.com/photo-1519834785169-98be25ec3f84?auto=format&fit=crop&w=2000&q=80');
+  background-size: cover;
+  background-position: center 30%;
+  transform: scale(1.08);
+  animation: hero-zoom 20s ease-out forwards;
+}
+
+@keyframes hero-zoom {
+  to {
+    transform: scale(1);
+  }
+}
+
+.hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(5, 5, 5, 0.55) 0%, rgba(5, 5, 5, 0.65) 50%, rgba(5, 5, 5, 0.92) 100%);
+}
+
+.hero__content {
+  position: relative;
+  z-index: 1;
+  padding-top: 100px;
+  padding-bottom: 140px;
+}
+
+.hero__title {
+  font-size: clamp(34px, 9vw, 128px);
+  font-weight: 800;
+  color: #ffffff;
+  text-transform: uppercase;
+  line-height: 0.98;
+  max-width: 16ch;
+}
+
+@media (max-width: 420px) {
+  .hero__title {
+    font-size: 12vw;
+  }
+}
+
+.hero__text {
+  margin-top: 32px;
+  font-size: clamp(16px, 2vw, 20px);
+  color: #e4e4e4;
+  max-width: 480px;
+  font-weight: 300;
+}
+
+.hero__actions {
+  margin-top: 44px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.hero__scroll-indicator {
+  position: absolute;
+  left: 50%;
+  bottom: 40px;
+  transform: translateX(-50%);
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.hero__scroll-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(240, 192, 64, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero__scroll-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--gold);
+  animation: scroll-pulse 2s ease-in-out infinite;
+}
+
+@keyframes scroll-pulse {
+  0%,
+  100% {
+    transform: translateY(-6px);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translateY(6px);
+    opacity: 1;
+  }
+}
+
+.hero__scroll-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .hero__scroll-label {
+    display: inline;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero__content {
+    padding-top: 120px;
+    padding-bottom: 110px;
+  }
+}
