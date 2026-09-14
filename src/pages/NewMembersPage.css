@@ -1,80 +1,85 @@
-﻿.members-hero {
+.members {
+  position: relative;
+  overflow: hidden;
   padding-top: 140px;
-  padding-bottom: 64px;
+  padding-bottom: 96px;
 }
 
 @media (max-width: 640px) {
-  .members-hero {
+  .members {
     padding-top: 116px;
-    padding-bottom: 48px;
+    padding-bottom: 72px;
   }
 }
 
-.members-hero__title {
+.members > .container {
+  position: relative;
+  z-index: 1;
+}
+
+.members__grid {
+  display: grid;
+  gap: 48px;
+  align-items: center;
+}
+
+@media (min-width: 900px) {
+  .members__grid {
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 80px;
+  }
+}
+
+.members__title {
   margin-top: 16px;
   font-size: clamp(30px, 4.5vw, 48px);
   text-transform: uppercase;
   max-width: 16ch;
 }
 
-.members-hero__text {
+.members__text {
   margin-top: 18px;
   font-size: 17px;
   color: var(--text-secondary);
-  max-width: 52ch;
+  max-width: 46ch;
   font-weight: 300;
 }
 
-.members-hero__cta {
+.members__cta {
   margin-top: 28px;
 }
 
-.members-qr {
-  position: relative;
-  padding-top: 64px;
-  padding-bottom: 88px;
-}
-
-@media (max-width: 640px) {
-  .members-qr {
-    padding-top: 48px;
-    padding-bottom: 64px;
-  }
-}
-
-.members-qr__inner {
-  position: relative;
-  z-index: 1;
+.members__qr-wrap {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   gap: 16px;
-}
-
-.members-qr__title {
-  font-size: clamp(22px, 3.2vw, 30px);
-  text-transform: uppercase;
-}
-
-.members-qr__text {
-  margin-top: 10px;
-  color: var(--text-secondary);
-  font-weight: 300;
-  max-width: 44ch;
-}
-
-.members-qr__card {
-  display: inline-flex;
-  padding: 18px;
+  padding: 40px 32px;
   background: var(--bg-card);
   border: 1px solid var(--border-default);
   border-radius: 16px;
+  box-shadow: 0 26px 36px -18px rgba(60, 40, 20, 0.3);
+}
+
+.members__qr-card {
+  display: inline-flex;
+  padding: 16px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-default);
+  border-radius: 14px;
   color: var(--text-primary);
 }
 
-.members-qr__link {
+.members__qr-caption {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--text-primary);
+}
+
+.members__qr-link {
   font-family: var(--font-mono);
-  font-size: 14px;
+  font-size: 13px;
   color: var(--accent);
 }
