@@ -43,11 +43,16 @@
 }
 
 .about__text {
-  margin-top: 28px;
-  font-size: 18px;
+  margin-top: 20px;
+  font-size: 17px;
+  line-height: 1.6;
   color: var(--text-secondary);
-  max-width: 44ch;
+  max-width: 52ch;
   font-weight: 300;
+}
+
+.about__text:first-of-type {
+  margin-top: 28px;
 }
 
 .about__cta {
@@ -68,5 +73,5 @@
 }
 
 .about__image {
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 3 / 2;
 }
