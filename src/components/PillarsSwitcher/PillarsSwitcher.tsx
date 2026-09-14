@@ -82,9 +82,6 @@ export function PillarsSwitcher() {
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             className="pillars__panel"
           >
-            <span className="pillars__panel-index">
-              0{active + 1} / 0{pillars.length}
-            </span>
             <p className="pillars__panel-text">{current.text}</p>
           </motion.div>
         </AnimatePresence>
