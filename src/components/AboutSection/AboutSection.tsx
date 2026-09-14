@@ -1,5 +1,5 @@
 ﻿import churchBuilding from '../../assets/churchBuilding.jpg';
-import logoLight from '../../assets/logoLightIcon.png';
+import logoBadge from '../../assets/logoBadge.jpg';
 import { AnimatedText } from '../AnimatedText/AnimatedText';
 import { OrganicLines } from '../OrganicLines/OrganicLines';
 import { ParallaxImage } from '../ParallaxImage/ParallaxImage';
@@ -18,7 +18,7 @@ export function AboutSection() {
   return (
     <section id="somos" className="section section--alt about">
       <img
-        src={logoLight}
+        src={logoBadge}
         alt=""
         className="about__watermark"
         aria-hidden="true"

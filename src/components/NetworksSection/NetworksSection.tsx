@@ -1,4 +1,4 @@
-﻿import logoLight from '../../assets/logoLightIcon.png';
+﻿import logoBadge from '../../assets/logoBadge.jpg';
 import { socialLinks } from '../../data/socialLinks';
 import { AnimatedText } from '../AnimatedText/AnimatedText';
 import { Reveal, StaggerGroup } from '../Reveal/Reveal';
@@ -10,7 +10,7 @@ export function NetworksSection() {
   return (
     <section id="redes" className="section networks">
       <img
-        src={logoLight}
+        src={logoBadge}
         alt=""
         className="networks__watermark"
         aria-hidden="true"
