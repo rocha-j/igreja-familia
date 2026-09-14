@@ -31,8 +31,8 @@ export function ScheduleSection() {
         </div>
 
         <StaggerGroup className="schedule__grid">
-          {schedule.map((program, index) => (
-            <ScheduleCard key={program.id} program={program} index={index} />
+          {schedule.map((program) => (
+            <ScheduleCard key={program.id} program={program} />
           ))}
         </StaggerGroup>
 

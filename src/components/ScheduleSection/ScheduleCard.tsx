@@ -1,22 +1,11 @@
-import { motion } from 'framer-motion';
 import type { ScheduleProgram } from '../../data/schedule';
 import { StaggerItem } from '../Reveal/Reveal';
 import './ScheduleCard.css';
 
-export function ScheduleCard({ program, index }: { program: ScheduleProgram; index: number }) {
+export function ScheduleCard({ program }: { program: ScheduleProgram }) {
   return (
     <StaggerItem className="schedule-card">
       <span className="schedule-card__icon-wrap">
-        <motion.span
-          className="schedule-card__ping"
-          animate={{ scale: [1, 1.6], opacity: [0.4, 0] }}
-          transition={{
-            duration: 2.6,
-            repeat: Infinity,
-            ease: 'easeOut',
-            delay: index * 0.5,
-          }}
-        />
         <span className="schedule-card__icon-frame">
           <img src={program.icon} alt="" className="schedule-card__icon" />
         </span>
