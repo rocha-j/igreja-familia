@@ -1,4 +1,4 @@
-*,
+﻿*,
 *::before,
 *::after {
   box-sizing: border-box;
@@ -61,7 +61,7 @@ ul {
 }
 
 :focus-visible {
-  outline: 2px solid var(--gold);
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
 
@@ -89,13 +89,13 @@ ul {
   font-size: 13px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--accent);
   display: inline-flex;
   align-items: center;
 }
 
-.gold {
-  color: var(--gold);
+.accent {
+  color: var(--accent);
 }
 
 .section {
@@ -140,12 +140,12 @@ ul {
 }
 
 .btn-primary {
-  background: var(--gold);
-  color: #171008;
+  background: var(--accent);
+  color: var(--accent-contrast);
 }
 
 .btn-primary:hover {
-  background: var(--gold-hover);
+  background: var(--accent-hover);
 }
 
 .btn-secondary {
@@ -155,8 +155,8 @@ ul {
 }
 
 .btn-secondary:hover {
-  border-color: var(--gold);
-  color: var(--gold);
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 .link-underline {

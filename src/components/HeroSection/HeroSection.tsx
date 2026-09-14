@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+﻿import { motion } from 'framer-motion';
 import { AnimatedText } from '../AnimatedText/AnimatedText';
 import './HeroSection.css';
 
@@ -13,7 +13,7 @@ export function HeroSection() {
           as="h1"
           className="hero__title"
           text="JUNTOS TRANSFORMANDO VIDAS"
-          goldWords={['TRANSFORMANDO']}
+          accentWords={['TRANSFORMANDO']}
           delay={0.3}
         />
 

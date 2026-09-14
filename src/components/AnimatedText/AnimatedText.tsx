@@ -1,19 +1,19 @@
-import { motion } from 'framer-motion';
+﻿import { motion } from 'framer-motion';
 import type { ReactNode } from 'react';
 
 interface AnimatedTextProps {
   text: string;
   className?: string;
-  goldWords?: string[];
+  accentWords?: string[];
   delay?: number;
   as?: 'h1' | 'h2' | 'h3';
 }
 
-function renderWord(word: string, isGold: boolean, key: number) {
+function renderWord(word: string, isAccent: boolean, key: number) {
   return (
     <span key={key} style={{ display: 'inline-block', overflow: 'hidden', paddingBottom: '0.08em' }}>
       <motion.span
-        style={{ display: 'inline-block', color: isGold ? 'var(--gold)' : undefined }}
+        style={{ display: 'inline-block', color: isAccent ? 'var(--accent)' : undefined }}
         variants={{
           hidden: { y: '110%' },
           visible: { y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } },
@@ -25,13 +25,13 @@ function renderWord(word: string, isGold: boolean, key: number) {
   );
 }
 
-export function AnimatedText({ text, className, goldWords = [], delay = 0, as = 'h2' }: AnimatedTextProps) {
+export function AnimatedText({ text, className, accentWords = [], delay = 0, as = 'h2' }: AnimatedTextProps) {
   const words = text.split(' ');
 
   const content: ReactNode = words.map((word, i) => {
     const bare = word.replace(/[.,!?]/g, '');
-    const isGold = goldWords.some((g) => g.toUpperCase() === bare.toUpperCase());
-    return renderWord(word, isGold, i);
+    const isAccent = accentWords.some((g) => g.toUpperCase() === bare.toUpperCase());
+    return renderWord(word, isAccent, i);
   });
 
   const motionProps = {

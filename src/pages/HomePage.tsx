@@ -6,23 +6,20 @@ import { LocationSection } from '../components/LocationSection/LocationSection';
 import { NetworksSection } from '../components/NetworksSection/NetworksSection';
 import { ScheduleSection } from '../components/ScheduleSection/ScheduleSection';
 import { ScrollProgress } from '../components/ScrollProgress/ScrollProgress';
-import { useTheme } from '../hooks/useTheme';
 
 export function HomePage() {
-  const { theme, toggleTheme } = useTheme();
-
   return (
     <>
-      <Header theme={theme} onToggleTheme={toggleTheme} />
-      <ScrollProgress theme={theme} />
+      <Header />
+      <ScrollProgress />
       <main>
         <HeroSection />
-        <AboutSection theme={theme} />
+        <AboutSection />
         <ScheduleSection />
-        <NetworksSection theme={theme} />
+        <NetworksSection />
         <LocationSection />
       </main>
-      <Footer theme={theme} />
+      <Footer />
     </>
   );
 }

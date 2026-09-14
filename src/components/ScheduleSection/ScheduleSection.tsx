@@ -1,4 +1,4 @@
-import { schedule } from '../../data/schedule';
+﻿import { schedule } from '../../data/schedule';
 import { AnimatedText } from '../AnimatedText/AnimatedText';
 import { ParallaxImage } from '../ParallaxImage/ParallaxImage';
 import { Reveal, StaggerGroup, StaggerItem } from '../Reveal/Reveal';
@@ -27,7 +27,7 @@ export function ScheduleSection() {
             as="h2"
             className="schedule__title"
             text="VENHA VIVER ESSA EXPERIÊNCIA"
-            goldWords={['EXPERIÊNCIA']}
+            accentWords={['EXPERIÊNCIA']}
           />
 
           <Reveal delay={0.15}>

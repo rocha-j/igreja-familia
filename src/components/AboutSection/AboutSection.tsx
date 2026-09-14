@@ -1,6 +1,4 @@
-import logoDark from '../../assets/logoDark.png';
-import logoLight from '../../assets/logoLightIcon.png';
-import type { Theme } from '../../hooks/useTheme';
+﻿import logoLight from '../../assets/logoLightIcon.png';
 import { AnimatedText } from '../AnimatedText/AnimatedText';
 import { OrganicLines } from '../OrganicLines/OrganicLines';
 import { ParallaxImage } from '../ParallaxImage/ParallaxImage';
@@ -9,15 +7,11 @@ import { Reveal } from '../Reveal/Reveal';
 import { SectionLabel } from '../SectionLabel/SectionLabel';
 import './AboutSection.css';
 
-interface AboutSectionProps {
-  theme: Theme;
-}
-
-export function AboutSection({ theme }: AboutSectionProps) {
+export function AboutSection() {
   return (
     <section id="somos" className="section section--alt about">
       <img
-        src={theme === 'dark' ? logoDark : logoLight}
+        src={logoLight}
         alt=""
         className="about__watermark"
         aria-hidden="true"
@@ -32,7 +26,7 @@ export function AboutSection({ theme }: AboutSectionProps) {
             as="h2"
             className="about__title"
             text="SOMOS UMA FAMÍLIA QUE AMA A DEUS, AMA PESSOAS E TRANSFORMA O MUNDO."
-            goldWords={['DEUS', 'PESSOAS', 'MUNDO']}
+            accentWords={['DEUS', 'PESSOAS', 'MUNDO']}
           />
 
           <Reveal delay={0.15}>

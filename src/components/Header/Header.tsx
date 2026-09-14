@@ -2,17 +2,10 @@ import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { navigation } from '../../data/navigation';
 import { useActiveSection } from '../../hooks/useActiveSection';
-import { ThemeToggle } from '../ThemeToggle/ThemeToggle';
-import type { Theme } from '../../hooks/useTheme';
 import logoDark from '../../assets/logoDark.png';
 import logoLight from '../../assets/logoLightIcon.png';
 import { withBase } from '../../utils/url';
 import './Header.css';
-
-interface HeaderProps {
-  theme: Theme;
-  onToggleTheme: () => void;
-}
 
 function sectionIdFromHref(href: string) {
   return href.split('#')[1] ?? '';
@@ -20,7 +13,7 @@ function sectionIdFromHref(href: string) {
 
 const NAV_SECTION_IDS = navigation.map((item) => sectionIdFromHref(item.href));
 
-export function Header({ theme, onToggleTheme }: HeaderProps) {
+export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const activeId = useActiveSection(NAV_SECTION_IDS);
@@ -43,10 +36,10 @@ export function Header({ theme, onToggleTheme }: HeaderProps) {
   }, [menuOpen]);
 
   // Over the Hero photo the header is transparent and always sits on a dark image,
-  // so it forces the dark treatment regardless of the site theme until scrolled.
-  // Other pages have no photo hero, so the header always uses its solid, theme-following look there.
+  // so it forces the dark treatment until scrolled past it.
+  // Other pages have no photo hero, so the header is always solid there.
   const solid = scrolled || !isHome;
-  const showLightMark = theme === 'light' && solid;
+  const showLightMark = solid;
 
   return (
     <header className={`header ${solid ? 'is-scrolled' : ''}`}>
@@ -73,7 +66,6 @@ export function Header({ theme, onToggleTheme }: HeaderProps) {
         </nav>
 
         <div className="header__actions">
-          <ThemeToggle theme={theme} onToggle={onToggleTheme} />
           <button
             type="button"
             className={`header__burger ${menuOpen ? 'is-open' : ''}`}

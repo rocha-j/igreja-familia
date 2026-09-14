@@ -1,4 +1,4 @@
-import { QRCodeSVG } from 'qrcode.react';
+﻿import { QRCodeSVG } from 'qrcode.react';
 import { useState } from 'react';
 import { AnimatedText } from '../components/AnimatedText/AnimatedText';
 import { Footer } from '../components/Footer/Footer';
@@ -6,7 +6,6 @@ import { Header } from '../components/Header/Header';
 import { Reveal } from '../components/Reveal/Reveal';
 import { SectionLabel } from '../components/SectionLabel/SectionLabel';
 import { givingChannels } from '../data/giving';
-import { useTheme } from '../hooks/useTheme';
 import { buildPixPayload } from '../utils/pix';
 import './DoacoesPage.css';
 
@@ -34,11 +33,9 @@ function CopyPixButton({ pixKey }: { pixKey: string }) {
 }
 
 export function DoacoesPage() {
-  const { theme, toggleTheme } = useTheme();
-
   return (
     <>
-      <Header theme={theme} onToggleTheme={toggleTheme} />
+      <Header />
 
       <main>
         <section className="section giving-hero">
@@ -49,7 +46,7 @@ export function DoacoesPage() {
               as="h1"
               className="giving-hero__title"
               text="CONTRIBUA COM A IGREJA FAMÍLIA"
-              goldWords={['FAMÍLIA']}
+              accentWords={['FAMÍLIA']}
             />
 
             <Reveal delay={0.15}>
@@ -102,7 +99,7 @@ export function DoacoesPage() {
         })}
       </main>
 
-      <Footer theme={theme} />
+      <Footer />
     </>
   );
 }

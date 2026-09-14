@@ -1,4 +1,4 @@
-.schedule {
+﻿.schedule {
   position: relative;
 }
 
@@ -59,7 +59,7 @@
   height: 44px;
   border-radius: 50%;
   border: 1px solid var(--border-strong);
-  color: var(--gold);
+  color: var(--accent);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -102,7 +102,7 @@
 .schedule__item-time {
   font-family: var(--font-mono);
   font-size: 14px;
-  color: var(--gold);
+  color: var(--accent);
 }
 
 .schedule__cta {

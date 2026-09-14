@@ -1,4 +1,4 @@
-.scroll-progress {
+﻿.scroll-progress {
   position: fixed;
   right: 32px;
   top: 50%;
@@ -27,7 +27,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  background: var(--gold);
+  background: var(--accent);
   transition: height 0.15s linear;
 }
 
@@ -40,8 +40,8 @@
   height: 22px;
   border-radius: 50%;
   background: var(--bg-primary);
-  border: 1px solid var(--gold);
-  color: var(--gold);
+  border: 1px solid var(--accent);
+  color: var(--accent);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -74,7 +74,7 @@
 
 .scroll-progress__list li.is-active a {
   opacity: 1;
-  color: var(--gold);
+  color: var(--accent);
 }
 
 .scroll-progress__list a:hover {

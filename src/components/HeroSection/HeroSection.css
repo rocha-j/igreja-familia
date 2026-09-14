@@ -1,11 +1,12 @@
-.hero {
-  /* The Hero photo is always a dark background regardless of site theme,
-     so its content locks to the dark-on-photo treatment instead of following
-     the theme tokens (which would go dark/muted in light mode and disappear). */
+﻿.hero {
+  /* The Hero photo is always a dark background, so its content locks to a
+     dark-on-photo treatment (with a bright gold accent) instead of following
+     the page's light, earthy palette, which would go muted and disappear. */
   --text-primary: #ffffff;
   --border-strong: rgba(255, 255, 255, 0.4);
-  --gold: #f0c040;
-  --gold-hover: #e0b030;
+  --accent: #f0c040;
+  --accent-hover: #e0b030;
+  --accent-contrast: #171008;
 
   position: relative;
   min-height: 100vh;
@@ -100,7 +101,7 @@
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: var(--gold);
+  background: var(--accent);
   animation: scroll-pulse 2s ease-in-out infinite;
 }
 

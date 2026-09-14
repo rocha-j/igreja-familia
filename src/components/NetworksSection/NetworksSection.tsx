@@ -1,22 +1,16 @@
-import logoDark from '../../assets/logoDark.png';
-import logoLight from '../../assets/logoLightIcon.png';
+﻿import logoLight from '../../assets/logoLightIcon.png';
 import { socialLinks } from '../../data/socialLinks';
-import type { Theme } from '../../hooks/useTheme';
 import { AnimatedText } from '../AnimatedText/AnimatedText';
 import { Reveal, StaggerGroup } from '../Reveal/Reveal';
 import { SectionLabel } from '../SectionLabel/SectionLabel';
 import { NetworkCard } from './NetworkCard';
 import './NetworksSection.css';
 
-interface NetworksSectionProps {
-  theme: Theme;
-}
-
-export function NetworksSection({ theme }: NetworksSectionProps) {
+export function NetworksSection() {
   return (
     <section id="redes" className="section networks">
       <img
-        src={theme === 'dark' ? logoDark : logoLight}
+        src={logoLight}
         alt=""
         className="networks__watermark"
         aria-hidden="true"
@@ -24,7 +18,7 @@ export function NetworksSection({ theme }: NetworksSectionProps) {
       <div className="container">
         <SectionLabel title="NOSSAS REDES" />
 
-        <AnimatedText as="h2" className="networks__title" text="SIGA NOSSAS REDES" goldWords={['REDES']} />
+        <AnimatedText as="h2" className="networks__title" text="SIGA NOSSAS REDES" accentWords={['REDES']} />
 
         <Reveal delay={0.15}>
           <p className="networks__text">

@@ -1,4 +1,4 @@
-.header {
+﻿.header {
   position: fixed;
   top: 0;
   left: 0;
@@ -18,13 +18,14 @@
   border-bottom: 1px solid var(--border-subtle);
 }
 
-/* The Hero photo behind the transparent header is always dark, regardless of
-   site theme, so force the dark-theme text/icon colors until scrolled past it. */
+/* The Hero photo behind the transparent header is always dark, so force the
+   dark-on-photo text/icon colors until scrolled past it. */
 .header:not(.is-scrolled) .header__inner {
   --text-nav: #aaaaaa;
   --text-primary: #ffffff;
-  --gold: #f0c040;
-  --gold-hover: #e0b030;
+  --accent: #f0c040;
+  --accent-hover: #e0b030;
+  --accent-contrast: #171008;
   --border-strong: #2a2a2a;
   color: var(--text-primary);
 }
@@ -75,7 +76,7 @@
 }
 
 .header__link.is-active {
-  color: var(--gold);
+  color: var(--accent);
 }
 
 .header__actions {

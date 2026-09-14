@@ -1,4 +1,4 @@
-.pillars {
+﻿.pillars {
   margin-top: 96px;
   display: grid;
   gap: 40px;
@@ -56,7 +56,7 @@
 }
 
 .pillars__tab.is-active .pillars__tab-word {
-  color: var(--gold);
+  color: var(--accent);
 }
 
 .pillars__tab-subtitle {
@@ -81,7 +81,7 @@
   top: 0;
   left: 0;
   height: 100%;
-  background: var(--gold);
+  background: var(--accent);
   display: block;
 }
 
@@ -121,7 +121,7 @@
   font-family: var(--font-mono);
   font-size: 12px;
   letter-spacing: 0.12em;
-  color: var(--gold);
+  color: var(--accent);
 }
 
 .pillars__panel-text {

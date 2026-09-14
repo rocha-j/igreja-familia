@@ -1,5 +1,15 @@
-.footer {
+﻿.footer {
+  /* The footer is a dark anchor against the site's light palette, so it
+     locks to a light-on-dark treatment instead of following the page tokens. */
+  --text-primary: #f2e6d3;
+  --text-secondary: #d8c7a8;
+  --text-nav: #c9b68e;
+  --footer-highlight: #a7b48a;
+  --border-strong: rgba(242, 230, 211, 0.25);
+  --border-subtle: rgba(242, 230, 211, 0.12);
+
   background: var(--bg-footer);
+  color: var(--text-primary);
   padding: 96px 0 32px;
   border-top: 1px solid var(--border-subtle);
 }
@@ -48,7 +58,7 @@
   font-size: 13px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--footer-highlight);
 }
 
 .footer__contact p {
@@ -68,7 +78,7 @@
   margin-top: 20px;
   font-size: 14px;
   font-weight: 500;
-  color: var(--gold);
+  color: var(--footer-highlight);
 }
 
 .footer__social {
@@ -91,8 +101,8 @@
 }
 
 .footer__social a:hover {
-  border-color: var(--gold);
-  color: var(--gold);
+  border-color: var(--footer-highlight);
+  color: var(--footer-highlight);
 }
 
 .footer__divider {

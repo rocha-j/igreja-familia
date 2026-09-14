@@ -1,21 +1,18 @@
-import { QRCodeSVG } from 'qrcode.react';
+﻿import { QRCodeSVG } from 'qrcode.react';
 import { AnimatedText } from '../components/AnimatedText/AnimatedText';
 import { Footer } from '../components/Footer/Footer';
 import { Header } from '../components/Header/Header';
 import { OrganicLines } from '../components/OrganicLines/OrganicLines';
 import { Reveal } from '../components/Reveal/Reveal';
 import { SectionLabel } from '../components/SectionLabel/SectionLabel';
-import { useTheme } from '../hooks/useTheme';
 import './NewMembersPage.css';
 
 const FORM_URL = 'https://www.enuv.es/DtCCavA';
 
 export function NewMembersPage() {
-  const { theme, toggleTheme } = useTheme();
-
   return (
     <>
-      <Header theme={theme} onToggleTheme={toggleTheme} />
+      <Header />
 
       <main>
         <section className="section members-hero">
@@ -26,7 +23,7 @@ export function NewMembersPage() {
               as="h1"
               className="members-hero__title"
               text="FAÇA PARTE DA NOSSA FAMÍLIA"
-              goldWords={['FAMÍLIA']}
+              accentWords={['FAMÍLIA']}
             />
 
             <Reveal delay={0.15}>
@@ -75,7 +72,7 @@ export function NewMembersPage() {
         </section>
       </main>
 
-      <Footer theme={theme} />
+      <Footer />
     </>
   );
 }

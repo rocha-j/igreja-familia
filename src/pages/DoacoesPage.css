@@ -1,4 +1,4 @@
-.giving-hero {
+﻿.giving-hero {
   padding-top: 180px;
   padding-bottom: 64px;
 }
@@ -54,7 +54,7 @@
   font-family: var(--font-mono);
   font-size: 13px;
   letter-spacing: 0.08em;
-  color: var(--gold);
+  color: var(--accent);
   margin-bottom: 16px;
 }
 
@@ -106,7 +106,7 @@
   font-size: 12px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--accent);
   border: 1px solid var(--border-strong);
   border-radius: 999px;
   padding: 8px 16px;
@@ -115,7 +115,7 @@
 }
 
 .giving-channel__copy-btn:hover {
-  border-color: var(--gold);
+  border-color: var(--accent);
 }
 
 .giving-channel__qr-wrap {

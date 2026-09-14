@@ -1,4 +1,4 @@
-.members-hero {
+﻿.members-hero {
   padding-top: 180px;
 }
 
@@ -65,5 +65,5 @@
 .members-qr__link {
   font-family: var(--font-mono);
   font-size: 14px;
-  color: var(--gold);
+  color: var(--accent);
 }

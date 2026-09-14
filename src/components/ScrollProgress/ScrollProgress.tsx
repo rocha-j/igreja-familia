@@ -1,8 +1,6 @@
-import logoDark from '../../assets/logoDark.png';
 import logoLight from '../../assets/logoLightIcon.png';
 import { useActiveSection } from '../../hooks/useActiveSection';
 import { useScrollProgress } from '../../hooks/useScrollProgress';
-import type { Theme } from '../../hooks/useTheme';
 import './ScrollProgress.css';
 
 const SECTIONS = [
@@ -14,11 +12,7 @@ const SECTIONS = [
   { id: 'footer', title: 'CONTATO' },
 ];
 
-interface ScrollProgressProps {
-  theme: Theme;
-}
-
-export function ScrollProgress({ theme }: ScrollProgressProps) {
+export function ScrollProgress() {
   // Raw scroll fraction (0-1) — used only for the icon's spin, so it keeps
   // turning smoothly with every pixel scrolled.
   const rawProgress = useScrollProgress();
@@ -39,7 +33,7 @@ export function ScrollProgress({ theme }: ScrollProgressProps) {
         <div className="scroll-progress__fill" style={{ height: `${sectionProgress * 100}%` }}>
           <span className="scroll-progress__marker">
             <img
-              src={theme === 'dark' ? logoDark : logoLight}
+              src={logoLight}
               alt=""
               className="scroll-progress__marker-icon"
               style={{ transform: `rotate(${rawProgress * 1800}deg)` }}

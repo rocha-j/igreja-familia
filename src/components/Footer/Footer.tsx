@@ -1,32 +1,22 @@
 import { Link } from 'react-router-dom';
 import { navigation } from '../../data/navigation';
 import { socialLinks } from '../../data/socialLinks';
-import type { Theme } from '../../hooks/useTheme';
 import logoDark from '../../assets/logoDark.png';
-import logoLight from '../../assets/logoLightIcon.png';
 import { SocialIcon } from '../SocialIcon/SocialIcon';
 import { withBase } from '../../utils/url';
 import './Footer.css';
-
-interface FooterProps {
-  theme: Theme;
-}
 
 const WHATSAPP_URL =
   'https://wa.me/5511960855620?text=' +
   encodeURIComponent('Olá! Gostaria de saber mais sobre a Igreja Família.');
 
-export function Footer({ theme }: FooterProps) {
+export function Footer() {
   return (
     <footer id="footer" className="footer">
       <div className="container footer__grid">
         <div className="footer__brand">
           <span className="footer__logo">
-            <img
-              src={theme === 'dark' ? logoDark : logoLight}
-              alt="Igreja Família"
-              className="footer__logo-mark"
-            />
+            <img src={logoDark} alt="Igreja Família" className="footer__logo-mark" />
             Igreja Família
           </span>
         </div>
