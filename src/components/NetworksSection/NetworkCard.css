@@ -13,13 +13,18 @@
   border: 1px solid var(--border-default);
   border-radius: 14px;
   overflow: hidden;
+  /* A blurred, downward-only shadow (rather than one hugging every edge)
+     reads as the card floating above the page, like a balloon. */
+  box-shadow: 0 26px 36px -18px rgba(60, 40, 20, 0.3);
   transition: transform var(--duration-fast) var(--ease-premium),
-    border-color var(--duration-fast) var(--ease-premium);
+    border-color var(--duration-fast) var(--ease-premium),
+    box-shadow var(--duration-fast) var(--ease-premium);
 }
 
 .network-card__link:hover {
-  transform: translateY(-6px);
+  transform: translateY(-10px);
   border-color: var(--accent);
+  box-shadow: 0 38px 50px -16px rgba(60, 40, 20, 0.36);
 }
 
 .network-card__icon-wrap {
