@@ -9,37 +9,39 @@ export function HeroSection() {
       <div className="hero__overlay" />
 
       <div className="container hero__content">
-        <AnimatedText
-          as="h1"
-          className="hero__title"
-          text="UM LUGAR PRA CHAMAR DE LAR"
-          accentWords={['LAR']}
-          delay={0.3}
-        />
+        <div className="hero__inner">
+          <AnimatedText
+            as="h1"
+            className="hero__title"
+            text="UM LUGAR PRA CHAMAR DE LAR"
+            accentWords={['LAR']}
+            delay={0.3}
+          />
 
-        <motion.p
-          className="hero__text"
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.9, ease: [0.16, 1, 0.3, 1] }}
-        >
-          Nossas portas estão sempre abertas. Venha conhecer a Igreja Família e fazer parte dessa
-          história.
-        </motion.p>
+          <motion.p
+            className="hero__text"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.9, ease: [0.16, 1, 0.3, 1] }}
+          >
+            Nossas portas estão sempre abertas. Venha conhecer a Igreja Família e fazer parte dessa
+            história.
+          </motion.p>
 
-        <motion.div
-          className="hero__actions"
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 1.05, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <a href="#onde-estamos" className="btn btn-primary">
-            Como Chegar
-          </a>
-          <a href="#somos" className="btn btn-secondary">
-            Conheça Nossa História
-          </a>
-        </motion.div>
+          <motion.div
+            className="hero__actions"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 1.05, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <a href="#onde-estamos" className="btn btn-primary">
+              Como Chegar
+            </a>
+            <a href="#somos" className="btn btn-secondary">
+              Conheça Nossa História
+            </a>
+          </motion.div>
+        </div>
       </div>
 
       <motion.a
