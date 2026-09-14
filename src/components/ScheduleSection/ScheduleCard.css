@@ -5,7 +5,7 @@
   align-items: center;
   text-align: center;
   height: 100%;
-  padding: 40px 28px;
+  padding: 44px 28px 36px;
   background: var(--bg-card);
   border: 1px solid var(--border-default);
   border-radius: 14px;
@@ -28,6 +28,18 @@
   transition: transform var(--duration-base) var(--ease-premium);
 }
 
+.schedule-card::after {
+  content: '';
+  position: absolute;
+  top: -35%;
+  right: -25%;
+  width: 60%;
+  height: 60%;
+  background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+  opacity: 0.07;
+  pointer-events: none;
+}
+
 .schedule-card:hover {
   transform: translateY(-8px);
   border-color: var(--accent);
@@ -39,12 +51,28 @@
 }
 
 .schedule-card__icon-wrap {
+  position: relative;
   width: 76px;
   height: 76px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+}
+
+.schedule-card__icon-wrap::before {
+  content: '';
+  position: absolute;
+  inset: -7px;
+  border-radius: 50%;
+  border: 1px solid var(--border-default);
+  transition: border-color var(--duration-fast) var(--ease-premium),
+    transform var(--duration-fast) var(--ease-premium);
+}
+
+.schedule-card:hover .schedule-card__icon-wrap::before {
+  border-color: var(--accent);
+  transform: scale(1.05);
 }
 
 .schedule-card__icon-frame {
@@ -71,28 +99,54 @@
   object-fit: cover;
 }
 
+.schedule-card__divider {
+  margin-top: 22px;
+  width: 30px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+.schedule-card__body {
+  margin-top: 22px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
 .schedule-card__name {
-  margin-top: 24px;
   font-family: var(--font-display);
   font-size: 20px;
   font-weight: 800;
   color: var(--text-primary);
   text-transform: uppercase;
+  letter-spacing: 0.01em;
 }
 
 .schedule-card__times {
   margin-top: 18px;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 8px;
 }
 
 .schedule-card__time-row {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
+  padding: 10px 0;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.schedule-card__time-row:first-child {
+  border-top: none;
+  padding-top: 0;
 }
 
 .schedule-card__day {
@@ -103,6 +157,10 @@
 
 .schedule-card__time {
   font-family: var(--font-mono);
-  font-size: 14px;
+  font-size: 13px;
+  font-weight: 500;
   color: var(--accent);
+  background: var(--bg-alt);
+  padding: 3px 10px;
+  border-radius: 999px;
 }

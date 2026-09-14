@@ -11,15 +11,19 @@ export function ScheduleCard({ program }: { program: ScheduleProgram }) {
         </span>
       </span>
 
-      <span className="schedule-card__name">{program.title}</span>
+      <span className="schedule-card__divider" aria-hidden="true" />
 
-      <div className="schedule-card__times">
-        {program.schedule.map((entry, i) => (
-          <div key={i} className="schedule-card__time-row">
-            <span className="schedule-card__day">{entry.day}</span>
-            {entry.time && <span className="schedule-card__time">{entry.time}</span>}
-          </div>
-        ))}
+      <div className="schedule-card__body">
+        <span className="schedule-card__name">{program.title}</span>
+
+        <div className="schedule-card__times">
+          {program.schedule.map((entry, i) => (
+            <div key={i} className="schedule-card__time-row">
+              <span className="schedule-card__day">{entry.day}</span>
+              {entry.time && <span className="schedule-card__time">{entry.time}</span>}
+            </div>
+          ))}
+        </div>
       </div>
     </StaggerItem>
   );
