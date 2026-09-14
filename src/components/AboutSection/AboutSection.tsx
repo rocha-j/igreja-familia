@@ -32,8 +32,8 @@ export function AboutSection() {
           <AnimatedText
             as="h2"
             className="about__title"
-            text="SOMOS UMA FAMÍLIA QUE AMA A DEUS, AMA PESSOAS E TRANSFORMA O MUNDO."
-            accentWords={['DEUS', 'PESSOAS', 'MUNDO']}
+            text="5 ANOS DE UMA HISTÓRIA ESCRITA POR DEUS"
+            accentWords={['5', 'DEUS']}
           />
 
           {HISTORY_PARAGRAPHS.map((paragraph, i) => (
