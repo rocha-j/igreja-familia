@@ -9,8 +9,8 @@ import { SectionLabel } from '../SectionLabel/SectionLabel';
 import './AboutSection.css';
 
 const HISTORY_PARAGRAPHS = [
-  'Tudo começou em julho de 2020, em meio à pandemia: uma visão que nasceu anos antes, um discipulado na sala de uma casa e cinco pessoas dispostas a caminhar juntas. Em 2021, realizamos nosso primeiro culto oficial com apenas R$ 253,00 em caixa — e Deus supriu cada detalhe.',
-  'De uma sala, passamos por um hotel e por uma garagem até chegarmos ao endereço onde estamos hoje, em São Bernardo do Campo. Em cada etapa, vidas foram restauradas, famílias foram alcançadas e uma pequena família se tornou uma igreja inteira — incluindo uma missão a Moçambique, onde mais de 600 pessoas decidiram entregar suas vidas a Jesus.',
+  'Tudo começou em julho de 2020, em meio à pandemia: uma visão que nasceu anos antes, um discipulado na sala de uma casa e cinco pessoas dispostas a caminhar juntas. Em 2021, realizamos nosso primeiro culto oficial com apenas R$ 253,00 em caixa e Deus supriu cada detalhe.',
+  'De uma sala, passamos por um hotel e por uma garagem até chegarmos ao endereço onde estamos hoje, em São Bernardo do Campo. Em cada etapa, vidas foram restauradas, famílias foram alcançadas e uma pequena família se tornou uma igreja inteira incluindo uma missão a Moçambique, onde mais de 600 pessoas decidiram entregar suas vidas a Jesus.',
   'Hoje, celebrando 5 anos, seguimos com a mesma convicção que nos trouxe até aqui: amar a Deus, amar pessoas e continuar escrevendo essa história.',
 ];
 

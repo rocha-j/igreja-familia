@@ -1,110 +1,41 @@
-﻿.schedule {
+.schedule {
   position: relative;
 }
 
-.schedule__grid {
-  display: grid;
-  gap: 56px;
-  align-items: center;
-}
-
-@media (min-width: 1024px) {
-  .schedule__grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
-  }
-}
-
-.schedule__image {
-  aspect-ratio: 4 / 5;
+.schedule__intro {
+  max-width: 620px;
+  margin: 0 auto;
+  text-align: center;
 }
 
 .schedule__title {
   margin-top: 24px;
   font-size: clamp(30px, 4.5vw, 48px);
   text-transform: uppercase;
-  max-width: 14ch;
 }
 
 .schedule__text {
-  margin-top: 24px;
+  margin-top: 20px;
   font-size: 17px;
   color: var(--text-secondary);
   font-weight: 300;
-  max-width: 46ch;
 }
 
-.schedule__list {
-  margin-top: 40px;
+.schedule__grid {
+  margin-top: 56px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 768px) {
+  .schedule__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.schedule__cta-wrap {
+  margin-top: 48px;
   display: flex;
-  flex-direction: column;
-}
-
-.schedule__item {
-  display: flex;
-  align-items: flex-start;
-  gap: 18px;
-  padding: 24px 0;
-  border-top: 1px solid var(--border-subtle);
-}
-
-.schedule__item:first-child {
-  border-top: none;
-  padding-top: 0;
-}
-
-.schedule__item-icon {
-  flex-shrink: 0;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: 1px solid var(--border-strong);
-  color: var(--accent);
-  display: flex;
-  align-items: center;
   justify-content: center;
-}
-
-.schedule__item-info {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  flex: 1;
-  padding-top: 10px;
-}
-
-.schedule__item-title {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--text-primary);
-}
-
-.schedule__item-times {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 8px 20px;
-}
-
-.schedule__item-time-row {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-  white-space: nowrap;
-}
-
-.schedule__item-day {
-  font-size: 13px;
-  color: var(--text-secondary);
-  font-weight: 300;
-}
-
-.schedule__item-time {
-  font-family: var(--font-mono);
-  font-size: 14px;
-  color: var(--accent);
-}
-
-.schedule__cta {
-  margin-top: 40px;
 }
