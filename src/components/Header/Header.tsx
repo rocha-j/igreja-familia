@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { navigation } from '../../data/navigation';
 import { useActiveSection } from '../../hooks/useActiveSection';
-import logoDark from '../../assets/logoDark.png';
-import logoLight from '../../assets/logoLightIcon.png';
+import logoBadge from '../../assets/logoBadge.jpg';
 import { withBase } from '../../utils/url';
 import './Header.css';
 
@@ -39,17 +38,12 @@ export function Header() {
   // so it forces the dark treatment until scrolled past it.
   // Other pages have no photo hero, so the header is always solid there.
   const solid = scrolled || !isHome;
-  const showLightMark = solid;
 
   return (
     <header className={`header ${solid ? 'is-scrolled' : ''}`}>
       <div className="container header__inner">
         <a href={withBase('/#hero')} className="header__logo">
-          <img
-            src={showLightMark ? logoLight : logoDark}
-            alt="Igreja Família"
-            className="header__logo-mark"
-          />
+          <img src={logoBadge} alt="Igreja Família" className="header__logo-mark" />
           Igreja Família
         </a>
 

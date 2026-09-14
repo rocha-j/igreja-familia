@@ -12,25 +12,25 @@
 }
 
 .header.is-scrolled {
-  background: color-mix(in srgb, var(--bg-primary) 78%, transparent);
+  background: color-mix(in srgb, var(--bg-footer) 92%, transparent);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border-subtle);
 }
 
-/* The Hero photo behind the transparent header is always dark, so force the
-   dark-on-photo text/icon colors until scrolled past it. */
-.header:not(.is-scrolled) .header__inner {
-  --text-nav: #aaaaaa;
-  --text-primary: #ffffff;
-  --accent: #f0c040;
-  --accent-hover: #e0b030;
-  --accent-contrast: #171008;
-  --border-strong: #2a2a2a;
-  color: var(--text-primary);
-}
-
+/* The header always sits on a dark surface — the Hero photo when transparent,
+   the footer-matched dark green fill once scrolled — so it always uses the
+   same light-on-dark treatment as the footer. */
 .header__inner {
+  --text-nav: #c9b68e;
+  --text-primary: #f2e6d3;
+  --text-secondary: #d8c7a8;
+  --accent: #a7b48a;
+  --accent-hover: #8fa070;
+  --accent-contrast: #171008;
+  --border-strong: rgba(242, 230, 211, 0.25);
+  --border-subtle: rgba(242, 230, 211, 0.12);
+  color: var(--text-primary);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -50,7 +50,8 @@
 .header__logo-mark {
   width: 36px;
   height: 36px;
-  object-fit: contain;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 .header__nav {
@@ -121,9 +122,11 @@
 }
 
 .header__mobile-menu {
+  --border-subtle: rgba(242, 230, 211, 0.12);
   position: fixed;
   inset: 76px 0 0 0;
-  background: var(--bg-primary);
+  background: var(--bg-footer);
+  color: #f2e6d3;
   transform: translateY(-8px);
   opacity: 0;
   pointer-events: none;

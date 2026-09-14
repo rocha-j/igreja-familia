@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { navigation } from '../../data/navigation';
 import { socialLinks } from '../../data/socialLinks';
-import logoDark from '../../assets/logoDark.png';
+import logoBadge from '../../assets/logoBadge.jpg';
 import { SocialIcon } from '../SocialIcon/SocialIcon';
 import { withBase } from '../../utils/url';
 import './Footer.css';
@@ -16,7 +16,7 @@ export function Footer() {
       <div className="container footer__grid">
         <div className="footer__brand">
           <span className="footer__logo">
-            <img src={logoDark} alt="Igreja Família" className="footer__logo-mark" />
+            <img src={logoBadge} alt="Igreja Família" className="footer__logo-mark" />
             Igreja Família
           </span>
         </div>
