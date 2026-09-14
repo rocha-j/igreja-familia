@@ -1,5 +1,11 @@
 .schedule {
   position: relative;
+  overflow: hidden;
+}
+
+.schedule > .container {
+  position: relative;
+  z-index: 1;
 }
 
 .schedule__intro {

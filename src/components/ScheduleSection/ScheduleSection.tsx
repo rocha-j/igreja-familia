@@ -1,5 +1,6 @@
 import { schedule } from '../../data/schedule';
 import { AnimatedText } from '../AnimatedText/AnimatedText';
+import { OrganicLines } from '../OrganicLines/OrganicLines';
 import { Reveal, StaggerGroup } from '../Reveal/Reveal';
 import { SectionLabel } from '../SectionLabel/SectionLabel';
 import { ScheduleCard } from './ScheduleCard';
@@ -8,6 +9,8 @@ import './ScheduleSection.css';
 export function ScheduleSection() {
   return (
     <section id="programacao" className="section section--alt schedule">
+      <OrganicLines variant="top-right" />
+
       <div className="container">
         <div className="schedule__intro">
           <SectionLabel title="PROGRAMAÇÃO" />
@@ -28,8 +31,8 @@ export function ScheduleSection() {
         </div>
 
         <StaggerGroup className="schedule__grid">
-          {schedule.map((program) => (
-            <ScheduleCard key={program.id} program={program} />
+          {schedule.map((program, index) => (
+            <ScheduleCard key={program.id} program={program} index={index} />
           ))}
         </StaggerGroup>
 
