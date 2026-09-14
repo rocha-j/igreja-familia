@@ -59,30 +59,30 @@
 }
 
 .hero__title {
-  font-size: clamp(32px, 7vw, 92px);
+  font-size: clamp(26px, 4vw, 48px);
   font-weight: 800;
   color: var(--text-primary);
   text-transform: uppercase;
-  line-height: 0.98;
-  max-width: 14ch;
+  line-height: 1.05;
+  max-width: 16ch;
 }
 
 @media (max-width: 420px) {
   .hero__title {
-    font-size: 10.5vw;
+    font-size: 7.5vw;
   }
 }
 
 .hero__text {
-  margin-top: 32px;
-  font-size: clamp(16px, 2vw, 20px);
+  margin-top: 18px;
+  font-size: clamp(15px, 1.6vw, 18px);
   color: var(--text-secondary);
-  max-width: 480px;
+  max-width: 440px;
   font-weight: 300;
 }
 
 .hero__actions {
-  margin-top: 44px;
+  margin-top: 26px;
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
