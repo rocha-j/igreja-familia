@@ -160,4 +160,12 @@
   .hero__actions {
     justify-content: flex-start;
   }
+
+  /* The wide desktop photo crops down to almost nothing of interest on a
+     narrow portrait screen, so mobile gets its own tighter, portrait-shaped
+     crop centered on the logo instead of a slice of the full facade. */
+  .hero__bg {
+    background-image: url('../../assets/heroChurchMobile.jpg');
+    background-position: center 22%;
+  }
 }
