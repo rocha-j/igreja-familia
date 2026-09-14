@@ -59,7 +59,7 @@ export function NewMembersPage() {
 
             <Reveal delay={0.15}>
               <div className="members-qr__card">
-                <QRCodeSVG value={FORM_URL} size={200} fgColor="currentColor" bgColor="transparent" level="M" />
+                <QRCodeSVG value={FORM_URL} size={172} fgColor="currentColor" bgColor="transparent" level="M" />
               </div>
             </Reveal>
 
