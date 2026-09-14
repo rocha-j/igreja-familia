@@ -1,24 +1,13 @@
-import { motion } from 'framer-motion';
 import type { SocialLink } from '../../data/socialLinks';
 import { StaggerItem } from '../Reveal/Reveal';
 import { SocialIcon } from '../SocialIcon/SocialIcon';
 import './NetworkCard.css';
 
-export function NetworkCard({ link, index }: { link: SocialLink; index: number }) {
+export function NetworkCard({ link }: { link: SocialLink }) {
   return (
     <StaggerItem className="network-card">
       <a href={link.href} target="_blank" rel="noopener noreferrer" className="network-card__link">
         <span className="network-card__icon-wrap">
-          <motion.span
-            className="network-card__ping"
-            animate={{ scale: [1, 1.7], opacity: [0.45, 0] }}
-            transition={{
-              duration: 2.4,
-              repeat: Infinity,
-              ease: 'easeOut',
-              delay: index * 0.5,
-            }}
-          />
           <span className="network-card__icon">
             <SocialIcon icon={link.icon} />
           </span>

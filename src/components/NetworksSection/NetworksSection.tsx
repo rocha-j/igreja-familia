@@ -27,8 +27,8 @@ export function NetworksSection() {
         </Reveal>
 
         <StaggerGroup className="networks__grid">
-          {socialLinks.map((link, index) => (
-            <NetworkCard key={link.id} link={link} index={index} />
+          {socialLinks.map((link) => (
+            <NetworkCard key={link.id} link={link} />
           ))}
         </StaggerGroup>
       </div>
