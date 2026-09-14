@@ -12,8 +12,8 @@ export function HeroSection() {
         <AnimatedText
           as="h1"
           className="hero__title"
-          text="JUNTOS TRANSFORMANDO VIDAS"
-          accentWords={['TRANSFORMANDO']}
+          text="UM LUGAR PRA CHAMAR DE LAR"
+          accentWords={['LAR']}
           delay={0.3}
         />
 
@@ -23,7 +23,8 @@ export function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.9, ease: [0.16, 1, 0.3, 1] }}
         >
-          Somos uma família que ama a Deus, ama pessoas e transforma o mundo.
+          Nossas portas estão sempre abertas. Venha conhecer a Igreja Família e fazer parte dessa
+          história.
         </motion.p>
 
         <motion.div
@@ -33,10 +34,10 @@ export function HeroSection() {
           transition={{ duration: 0.7, delay: 1.05, ease: [0.16, 1, 0.3, 1] }}
         >
           <a href="#onde-estamos" className="btn btn-primary">
-            Nos Visite
+            Como Chegar
           </a>
           <a href="#somos" className="btn btn-secondary">
-            Saiba Mais
+            Conheça Nossa História
           </a>
         </motion.div>
       </div>
