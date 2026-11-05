@@ -51,7 +51,6 @@
   width: 14px;
   height: 14px;
   object-fit: contain;
-  transition: transform 0.2s linear;
 }
 
 .scroll-progress__list {

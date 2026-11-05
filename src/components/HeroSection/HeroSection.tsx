@@ -16,14 +16,14 @@ export function HeroSection() {
             className="hero__title"
             text="UM LUGAR PRA CHAMAR DE LAR"
             accentWords={['LAR']}
-            delay={0.3}
+            delay={0.2}
           />
 
           <motion.p
             className="hero__text"
             initial={{ opacity: 0, y: distance.sm }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ ...transition.base, delay: 0.9 }}
+            transition={{ ...transition.base, delay: 0.6 }}
           >
             Nossas portas estão sempre abertas. Venha conhecer a Igreja Família e fazer parte dessa
             história.
@@ -33,7 +33,7 @@ export function HeroSection() {
             className="hero__actions"
             initial={{ opacity: 0, y: distance.sm }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ ...transition.base, delay: 1.05 }}
+            transition={{ ...transition.base, delay: 0.75 }}
           >
             <a href="#onde-estamos" className="btn btn-primary">
               Como Chegar
@@ -51,7 +51,7 @@ export function HeroSection() {
         aria-label="Role para baixo e descubra"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.6, delay: 1.3 }}
+        transition={{ duration: 0.6, delay: 0.9 }}
       >
         <span className="hero__scroll-circle">
           <span className="hero__scroll-dot" />

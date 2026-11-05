@@ -1,6 +1,6 @@
+import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import logoLight from '../../assets/logoLightIcon.png';
 import { useActiveSection } from '../../hooks/useActiveSection';
-import { useScrollProgress } from '../../hooks/useScrollProgress';
 import './ScrollProgress.css';
 
 const SECTIONS = [
@@ -13,9 +13,12 @@ const SECTIONS = [
 ];
 
 export function ScrollProgress() {
-  // Raw scroll fraction (0-1) — used only for the icon's spin, so it keeps
-  // turning smoothly with every pixel scrolled.
-  const rawProgress = useScrollProgress();
+  // The icon makes a single, slow turn over the whole page. It is driven by a
+  // motion value, so scrolling never triggers a React re-render, and it stays
+  // still for people who prefer reduced motion.
+  const { scrollYProgress } = useScroll();
+  const reduceMotion = useReducedMotion();
+  const rotate = useTransform(scrollYProgress, [0, 1], [0, reduceMotion ? 0 : 360]);
   const activeId = useActiveSection(SECTIONS.map((s) => s.id));
 
   // The list items are evenly spaced by flexbox, not by how tall each section
@@ -32,11 +35,11 @@ export function ScrollProgress() {
       <div className="scroll-progress__track">
         <div className="scroll-progress__fill" style={{ height: `${sectionProgress * 100}%` }}>
           <span className="scroll-progress__marker">
-            <img
+            <motion.img
               src={logoLight}
               alt=""
               className="scroll-progress__marker-icon"
-              style={{ transform: `rotate(${rawProgress * 1800}deg)` }}
+              style={{ rotate }}
             />
           </span>
         </div>

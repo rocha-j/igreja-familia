@@ -116,7 +116,9 @@
   height: 5px;
   border-radius: 50%;
   background: var(--accent);
-  animation: scroll-pulse 2s ease-in-out infinite;
+  /* Four pulses (~8s) are enough to invite a scroll; after that the dot
+     rests instead of pulsing for as long as the page is open. */
+  animation: scroll-pulse 2s ease-in-out 4;
 }
 
 @keyframes scroll-pulse {
