@@ -5,6 +5,8 @@
 export const ease = [0.16, 1, 0.3, 1] as const;
 
 export const duration = {
+  instant: 0.12,
+  quick: 0.2,
   fast: 0.3,
   base: 0.6,
   slow: 0.9,
