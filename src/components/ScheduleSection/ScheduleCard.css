@@ -171,3 +171,36 @@
   padding: 3px 10px;
   border-radius: 999px;
 }
+
+/* The next service fills in with the accent colour once the card has settled
+   in, so the eye lands on it without any looping motion. */
+.schedule-card__time-row.is-next .schedule-card__time {
+  color: var(--accent-contrast);
+  background: var(--accent);
+  animation: next-time-fill var(--duration-slow) var(--ease-premium) 0.5s backwards;
+}
+
+.schedule-card__next-tag {
+  flex-basis: 100%;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  animation: next-tag-in var(--duration-base) var(--ease-premium) 0.7s backwards;
+}
+
+@keyframes next-time-fill {
+  from {
+    color: var(--accent);
+    background: var(--bg-alt);
+  }
+}
+
+@keyframes next-tag-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}

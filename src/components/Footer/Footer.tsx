@@ -3,7 +3,7 @@ import { navigation } from '../../data/navigation';
 import { socialLinks } from '../../data/socialLinks';
 import logoBadge from '../../assets/logoBadge.jpg';
 import { SocialIcon } from '../SocialIcon/SocialIcon';
-import { withBase } from '../../utils/url';
+import { NavAnchor } from '../NavAnchor/NavAnchor';
 import './Footer.css';
 
 const WHATSAPP_URL =
@@ -23,9 +23,9 @@ export function Footer() {
 
         <nav className="footer__nav" aria-label="Navegação do rodapé">
           {navigation.map((item) => (
-            <a key={item.href} href={withBase(item.href)} className="link-underline">
+            <NavAnchor key={item.href} href={item.href} className="link-underline">
               {item.label}
-            </a>
+            </NavAnchor>
           ))}
         </nav>
 

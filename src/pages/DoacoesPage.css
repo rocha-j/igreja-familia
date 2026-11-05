@@ -111,11 +111,25 @@
   border-radius: 999px;
   padding: 8px 16px;
   transition: border-color var(--duration-fast) var(--ease-premium),
-    color var(--duration-fast) var(--ease-premium);
+    color var(--duration-fast) var(--ease-premium),
+    background-color var(--duration-fast) var(--ease-premium);
 }
 
-.giving-channel__copy-btn:hover {
+.giving-channel__copy-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.giving-channel__copy-btn:hover,
+.giving-channel__copy-btn:focus-visible {
   border-color: var(--accent);
+}
+
+.giving-channel__copy-btn.is-copied {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--accent-contrast);
 }
 
 .giving-channel__qr-wrap {

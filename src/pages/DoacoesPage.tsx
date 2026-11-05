@@ -1,5 +1,7 @@
-﻿import { QRCodeSVG } from 'qrcode.react';
+﻿import { motion } from 'framer-motion';
+import { QRCodeSVG } from 'qrcode.react';
 import { useState } from 'react';
+import { distance, duration, ease } from '../motion/tokens';
 import { AnimatedText } from '../components/AnimatedText/AnimatedText';
 import { Footer } from '../components/Footer/Footer';
 import { Header } from '../components/Header/Header';
@@ -26,8 +28,37 @@ function CopyPixButton({ pixKey }: { pixKey: string }) {
   }
 
   return (
-    <button type="button" className="giving-channel__copy-btn" onClick={handleCopy}>
-      {copied ? 'Copiado!' : 'Copiar chave'}
+    <button
+      type="button"
+      className={`giving-channel__copy-btn ${copied ? 'is-copied' : ''}`}
+      onClick={handleCopy}
+      aria-live="polite"
+    >
+      {/* Keyed so the label remounts on each state change and animates in; the
+          text itself swaps immediately, never waiting on an exit animation. */}
+      <motion.span
+        key={copied ? 'copied' : 'idle'}
+        className="giving-channel__copy-label"
+        initial={copied ? { opacity: 0, y: distance.sm / 2 } : false}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: duration.fast, ease }}
+      >
+        {copied && (
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+            <motion.path
+              d="M2 6.5 5 9.5 10 3"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{ duration: duration.fast, ease, delay: 0.05 }}
+            />
+          </svg>
+        )}
+        {copied ? 'Copiado!' : 'Copiar chave'}
+      </motion.span>
     </button>
   );
 }

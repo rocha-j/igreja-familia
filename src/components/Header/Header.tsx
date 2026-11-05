@@ -4,6 +4,7 @@ import { navigation } from '../../data/navigation';
 import { useActiveSection } from '../../hooks/useActiveSection';
 import logoBadge from '../../assets/logoBadge.jpg';
 import { withBase } from '../../utils/url';
+import { NavAnchor } from '../NavAnchor/NavAnchor';
 import './Header.css';
 
 function sectionIdFromHref(href: string) {
@@ -49,13 +50,13 @@ export function Header() {
 
         <nav className="header__nav" aria-label="Navegação principal">
           {navigation.map((item) => (
-            <a
+            <NavAnchor
               key={item.href}
-              href={withBase(item.href)}
+              href={item.href}
               className={`header__link link-underline ${sectionIdFromHref(item.href) === activeId ? 'is-active' : ''}`}
             >
               {item.label}
-            </a>
+            </NavAnchor>
           ))}
         </nav>
 
@@ -77,14 +78,14 @@ export function Header() {
       <div className={`header__mobile-menu ${menuOpen ? 'is-open' : ''}`}>
         <nav aria-label="Navegação mobile">
           {navigation.map((item, i) => (
-            <a
+            <NavAnchor
               key={item.href}
-              href={withBase(item.href)}
+              href={item.href}
               style={{ transitionDelay: `${i * 40}ms` }}
               onClick={() => setMenuOpen(false)}
             >
               {item.label}
-            </a>
+            </NavAnchor>
           ))}
         </nav>
       </div>
