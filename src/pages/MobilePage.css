@@ -83,6 +83,19 @@
   & .scene::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(14,14,8,.78) 0%, rgba(14,14,8,.1) 42%, rgba(14,14,8,.1) 62%, rgba(14,14,8,.85) 100%); }
   & .photo { position: absolute; inset: -4%; background-size: cover; background-position: center; transform: scale(calc(1 + .4 * var(--vp, 0))) translate3d(0, calc(var(--cov, 0) * -8%), 0); }
   & .sec--onde .photo { background-position: 50% 40%; }
+
+  /* Scroll-driven reveals, native path (step 6): the compositor runs transform and
+     opacity from the scroll position, so no JS writes --vp/--cov per frame.
+     The slot is exactly one scrollport tall, so "cover" splits 50/50: 0-50% is the
+     entry, 50-100% the exit. Without support the base rules above plus the rAF
+     fallback in MobilePage.tsx keep working, and nothing here is needed to read. */
+  @supports (animation-timeline: view()) {
+    & .slot { view-timeline: --slot block; }
+    & .sec--cards, & .sec--text { animation: mx-stack linear both; animation-timeline: --slot; animation-range: cover; }
+    & .sec--bleed { animation: mx-portal linear both; animation-timeline: --slot; animation-range: cover; }
+    & .sec--bleed .photo { animation: mx-zoom linear both; animation-timeline: --slot; animation-range: cover; }
+    & .sec::after { animation: mx-dim linear both; animation-timeline: --slot; animation-range: cover; }
+  }
   & .sec > .info, & .sec > .track, & .sec > .hint, & .sec > .foot { position: relative; z-index: 1; }
 
   /* ---------- info do módulo (acima do conteúdo) ---------- */
@@ -227,6 +240,22 @@
   & .full { margin: 0; }
 }
 
+@keyframes mx-stack {
+  0% { transform: translate3d(0, 0, 0) scale(1); border-radius: 30px 30px 0 0; }
+  50% { transform: translate3d(0, 0, 0) scale(1); border-radius: 0; }
+  100% { transform: translate3d(0, 100%, 0) scale(.92); border-radius: 0; }
+}
+@keyframes mx-portal {
+  0% { transform: translate3d(0, -100%, 0); clip-path: circle(4.5% at 50% 100%); }
+  50% { transform: translate3d(0, 0, 0); clip-path: circle(153% at 50% 100%); }
+  100% { transform: translate3d(0, 100%, 0); clip-path: circle(153% at 50% 100%); }
+}
+@keyframes mx-zoom {
+  0% { transform: scale(1.4) translate3d(0, 0, 0); }
+  50% { transform: scale(1) translate3d(0, 0, 0); }
+  100% { transform: scale(1) translate3d(0, -8%, 0); }
+}
+@keyframes mx-dim { 0%, 50% { opacity: 0; } 100% { opacity: .6; } }
 @keyframes mx-beacon { 0% { box-shadow: 0 0 0 0 rgba(240,179,92,.55); } 70%, 100% { box-shadow: 0 0 0 10px rgba(240,179,92,0); } }
 @keyframes mx-drop { from { transform: translateY(-12px); } to { transform: translateY(34px); } }
 @keyframes mx-pop { from { transform: scale(.4); opacity: 0; } to { transform: none; opacity: 1; } }
@@ -248,6 +277,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .mx .sec, .mx .card, .mx .photo, .mx .verse__mark { transform: none !important; clip-path: none !important; }
+  .mx .slot, .mx .sec, .mx .sec::after, .mx .sec--bleed .photo { animation: none !important; border-radius: 0; }
   .mx .w > span, .mx .rv { transform: none; transition: none; opacity: 1; }
   .mx .sec:not(.seen) .card { opacity: 1; }
   .mx .sec.seen .card, .mx .sec.seen .map, .mx .sec.seen .cal__day, .mx .sec.seen .cal__day.next, .mx .cal__day.next, .mx .cal__d.hit, .mx .sec.seen .nets li, .mx .radar i, .mx .cta--accent, .mx .sec--contribua::before, .mx .cta__label, .mx .brand i, .mx .hint i::after { animation: none; }

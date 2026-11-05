@@ -273,14 +273,17 @@ export function MobilePage() {
   useEffect(() => {
     const pages = pagesRef.current;
     if (!pages) return;
-    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // With native scroll-driven animations the compositor does the reveals (see the
+    // @supports block in MobilePage.css); the per-frame JS write is only the fallback.
+    const native = typeof CSS !== 'undefined' && CSS.supports('animation-timeline: view()');
+    const skipVars = native || matchMedia('(prefers-reduced-motion: reduce)').matches;
     let raf = 0;
     let last = -1;
     const frame = () => {
       raf = 0;
       const H = pages.clientHeight || 1;
       const st = pages.scrollTop;
-      if (!reduce) {
+      if (!skipVars) {
         secRefs.current.forEach((el, i) => {
           if (!el) return;
           const v = (i * H - st) / H;
