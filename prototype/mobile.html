@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#3b4029">
+<title>Igreja Família · Mobile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* =========================================================================
+   Igreja Família · experiência mobile horizontal
+   Arquitetura: app-shell 100dvh SEM scroll vertical.
+     [ INFO ]  contexto do capítulo ativo (muda conforme o slide)
+     [ SLIDE ] trilho horizontal com scroll-snap; o scroll vira movimento
+     [ DOCK ]  fixo: ação contextual + progresso por capítulo
+   Motion: tokens (easing/duração) -> scroll-linked (--p por slide) -> microinterações.
+   ========================================================================= */
+:root {
+  --font-display: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+
+  /* paleta do site (src/styles/tokens.css) */
+  --sand: #f2e6d3; --card: #faf3e7; --alt: #e8d5b8; --moss: #3b4029; --moss-deep: #2b2f1d;
+  --olive: #6b7256; --brown: #7b431e; --brown-deep: #5f3316; --ink: #2a2a1c; --ink-soft: #5c4a32;
+  --line: #dcc7a4; --amber: #f0b35c;
+
+  /* motion tokens (espelham src/motion/tokens.ts, ampliados p/ gesto) */
+  --ease-settle: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+  --dur-fast: 200ms; --dur-base: 420ms; --dur-slow: 750ms;
+  --stagger: 70ms;
+
+  --gx: max(18px, env(safe-area-inset-left), env(safe-area-inset-right));
+  --gap: 14px;
+  color-scheme: dark;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; background: #14160d; overscroll-behavior: none; }
+body { font-family: var(--font-body); color: var(--sand); -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent; }
+button { font: inherit; color: inherit; border: 0; background: none; cursor: pointer; padding: 0; }
+a { color: inherit; text-decoration: none; }
+
+/* ---------- shell ---------- */
+.app {
+  position: relative; height: 100dvh; width: min(100vw, 480px); margin-inline: auto; overflow: hidden;
+  display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr) auto;
+  background: radial-gradient(120% 70% at 85% 0%, #4a5033 0%, var(--moss) 45%, var(--moss-deep) 100%);
+  container-type: inline-size;
+  isolation: isolate;
+}
+#fx { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+
+/* ---------- INFO (acima do slide) ---------- */
+.info { padding: max(14px, env(safe-area-inset-top)) var(--gx) 10px; min-height: 0; }
+.info__bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.brand { display: flex; align-items: center; gap: 8px; font-family: var(--font-display); font-weight: 700; font-size: 15px; letter-spacing: -.01em; }
+.brand i { width: 8px; height: 8px; border-radius: 50%; background: var(--amber); box-shadow: 0 0 0 0 rgba(240,179,92,.6); animation: beacon 2.6s var(--ease-inout) 3; }
+@keyframes beacon { 0% { box-shadow: 0 0 0 0 rgba(240,179,92,.55);} 70%,100% { box-shadow: 0 0 0 10px rgba(240,179,92,0);} }
+.counter { font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; color: rgba(242,230,211,.6); font-variant-numeric: tabular-nums; }
+.counter b { color: var(--sand); font-weight: 500; display: inline-block; min-width: 2ch; text-align: right; }
+.info__kicker { font-family: var(--font-mono); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--amber); margin: 0 0 8px; }
+.info__title { font-family: var(--font-display); font-weight: 800; font-size: clamp(27px, 8.4cqw, 38px); line-height: 1.02; letter-spacing: -.025em; margin: 0 0 8px; text-wrap: balance; }
+.info__title em { font-style: normal; color: var(--amber); }
+.info__sub { margin: 0; font-size: 14px; line-height: 1.45; color: rgba(242,230,211,.72); max-width: 34ch; }
+.info__kicker, .info__title, .info__sub { will-change: transform, opacity; }
+
+/* ---------- SLIDE (trilho horizontal) ---------- */
+.stage { position: relative; min-height: 0; }
+.track {
+  height: 100%; display: flex; align-items: stretch; gap: var(--gap);
+  overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+  padding: 6px calc((100cqw - var(--sw)) / 2) 14px; perspective: 900px;
+  --sw: min(78cqw, 340px);
+}
+.track::-webkit-scrollbar { display: none; }
+.slide {
+  position: relative; flex: 0 0 var(--sw); scroll-snap-align: center; scroll-snap-stop: always;
+  border-radius: 28px; overflow: hidden; isolation: isolate; color: var(--ink);
+  background: var(--card); box-shadow: 0 24px 40px -18px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.04);
+  /* movimento guiado pelo scroll: --p vai de -1 (esquerda) a 1 (direita), 0 = centralizado */
+  --p: 0; --a: calc(min(1, max(-1, var(--p))));
+  transform: translateZ(0) scale(calc(1 - .07 * var(--abs, 0))) rotateY(calc(var(--a) * -9deg));
+  opacity: calc(1 - .38 * var(--abs, 0));
+  transform-origin: center;
+}
+.slide > * { position: relative; }
+.slide .bg { position: absolute; inset: -6% -14%; z-index: -1; background-size: cover; background-position: center; transform: translate3d(calc(var(--a) * -10%), 0, 0) scale(1.08); }
+
+/* entrada escalonada dos conteúdos quando o slide fica ativo */
+.rv { opacity: 0; transform: translate3d(0, 16px, 0); transition: opacity var(--dur-base) var(--ease-settle), transform var(--dur-slow) var(--ease-settle); transition-delay: calc(var(--i, 0) * var(--stagger)); }
+.slide.is-active .rv, .slide.seen .rv { opacity: 1; transform: none; }
+.slide:not(.is-active).seen .rv { transition-delay: 0ms; }
+
+/* tipos de slide */
+.s-hero { color: var(--sand); background: #000; }
+.s-hero .bg { background-image: linear-gradient(180deg, rgba(20,16,8,.15) 30%, rgba(20,16,8,.85) 100%), var(--img); }
+.s-hero .in, .s-pillar .in, .s-prog .in, .s-social .in, .s-give .in, .s-where .in { height: 100%; display: flex; flex-direction: column; padding: 22px 20px 20px; }
+.s-hero .in { justify-content: flex-end; }
+.chip { align-self: flex-start; font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; padding: 6px 10px; border-radius: 99px; background: rgba(250,243,231,.14); backdrop-filter: blur(8px); border: 1px solid rgba(250,243,231,.22); }
+.hero-t { font-family: var(--font-display); font-weight: 800; font-size: 30px; line-height: 1; letter-spacing: -.03em; margin: 14px 0 8px; }
+.hero-t em { font-style: normal; color: var(--amber); }
+.hero-p { margin: 0; font-size: 14px; line-height: 1.45; opacity: .88; }
+.swipe { margin-top: 18px; display: flex; align-items: center; gap: 10px; font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; opacity: .85; }
+.swipe i { position: relative; width: 44px; height: 1px; background: rgba(250,243,231,.4); overflow: hidden; }
+.swipe i::after { content: ""; position: absolute; inset: 0; width: 16px; background: var(--amber); animation: nudge 1.6s var(--ease-inout) 4; }
+@keyframes nudge { from { transform: translateX(-16px);} to { transform: translateX(44px);} }
+
+.s-pillar { color: var(--sand); }
+.s-pillar.c1 { background: var(--brown); } .s-pillar.c2 { background: var(--olive); } .s-pillar.c3 { background: #4a5033; }
+.s-pillar .giant { position: absolute; left: -4%; top: 14%; font-family: var(--font-display); font-weight: 800; font-size: 118px; letter-spacing: -.06em; line-height: .8; color: transparent; -webkit-text-stroke: 1.5px rgba(250,243,231,.28); white-space: nowrap; transform: translate3d(calc(var(--p) * 42%), 0, 0); }
+.s-pillar .in { justify-content: flex-end; }
+.s-pillar h3 { font-family: var(--font-display); font-weight: 800; font-size: 40px; letter-spacing: -.03em; line-height: 1; margin: 10px 0 10px; }
+.s-pillar p { margin: 0; font-size: 14px; line-height: 1.5; opacity: .9; }
+.num { font-family: var(--font-mono); font-size: 12px; letter-spacing: .12em; opacity: .75; }
+
+.s-prog, .s-social, .s-give, .s-where { background: var(--card); }
+.s-prog .in { gap: 6px; }
+.ic { width: 62px; height: 62px; border-radius: 20px; background-size: cover; background-position: center; box-shadow: 0 10px 22px -8px rgba(60,40,20,.5); transform: translate3d(calc(var(--p) * -26px), 0, 0) rotate(calc(var(--p) * 14deg)); }
+.s-prog h3, .s-social h3, .s-give h3, .s-where h3 { font-family: var(--font-display); font-weight: 800; font-size: 28px; letter-spacing: -.025em; line-height: 1.02; margin: 14px 0 4px; color: var(--ink); }
+.eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--brown); }
+.times { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 8px; }
+.times li { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 14px; border-radius: 16px; background: var(--sand); border: 1px solid var(--line); font-size: 14px; color: var(--ink-soft); position: relative; transition: background var(--dur-base), border-color var(--dur-base); }
+.times li b { font-family: var(--font-display); font-size: 20px; letter-spacing: -.02em; color: var(--ink); }
+.times li.next { background: var(--brown); border-color: var(--brown); color: var(--accent-contrast, #faf3e7); }
+.times li.next b { color: #fff; }
+.times li.next::after { content: "PRÓXIMO"; position: absolute; top: -8px; right: 12px; font-family: var(--font-mono); font-size: 9px; letter-spacing: .12em; padding: 3px 7px; border-radius: 99px; background: var(--amber); color: var(--ink); animation: pop var(--dur-slow) var(--ease-spring) both; }
+@keyframes pop { from { transform: scale(.4); opacity: 0;} to { transform: none; opacity: 1;} }
+.times li.once { grid-column: 1; }
+
+.s-social .big { font-family: var(--font-display); font-weight: 800; font-size: 96px; line-height: .8; letter-spacing: -.06em; color: var(--alt); transform: translate3d(calc(var(--p) * 30%), 0, 0); }
+.s-social .in { justify-content: space-between; }
+.s-social p, .s-give p, .s-where p { margin: 0; font-size: 14px; line-height: 1.5; color: var(--ink-soft); }
+.link { margin-top: 14px; display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14px; color: var(--brown); }
+
+.pix { margin: 14px 0 0; padding: 12px 14px; border-radius: 16px; background: var(--sand); border: 1px dashed var(--border-strong, #b99b72); font-family: var(--font-mono); font-size: 12px; word-break: break-all; color: var(--ink); }
+.s-give .in { justify-content: flex-end; }
+.copy { margin-top: 12px; align-self: flex-start; padding: 12px 18px; border-radius: 99px; background: var(--brown); color: #faf3e7; font-weight: 600; font-size: 14px; transition: transform var(--dur-fast) var(--ease-settle), background var(--dur-base); }
+.copy:active { transform: scale(.95); }
+.copy.ok { background: var(--olive); }
+
+.s-where .photo { height: 46%; margin: -22px -20px 14px; background-size: cover; background-position: center; transform: translate3d(calc(var(--p) * -8%), 0, 0) scale(1.12); }
+.s-where .in { padding-top: 0; overflow: hidden; }
+.s-where h3 { margin-top: 0; }
+
+/* ---------- DOCK (fixo abaixo do slide) ---------- */
+.dock { padding: 8px var(--gx) max(14px, env(safe-area-inset-bottom)); display: grid; gap: 12px; background: linear-gradient(180deg, rgba(43,47,29,0) 0%, rgba(43,47,29,.92) 38%); }
+.cta { position: relative; overflow: hidden; display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 54px; padding: 0 20px; border-radius: 99px; background: var(--sand); color: var(--ink); font-weight: 600; font-size: 15px; transition: transform var(--dur-fast) var(--ease-settle), background var(--dur-base); }
+.cta:active { transform: scale(.97); }
+.cta__label { display: block; }
+.cta svg { flex: none; transition: transform var(--dur-base) var(--ease-settle); }
+.cta:hover svg { transform: translateX(3px); }
+.nav { display: grid; grid-template-columns: 40px 1fr 40px; align-items: center; gap: 12px; }
+.arrow { width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(242,230,211,.25); display: grid; place-items: center; transition: transform var(--dur-fast) var(--ease-settle), opacity var(--dur-base), background var(--dur-base); }
+.arrow:active { transform: scale(.9); background: rgba(242,230,211,.12); }
+.arrow[disabled] { opacity: .25; pointer-events: none; }
+.segs { display: flex; gap: 5px; }
+.seg { position: relative; height: 4px; border-radius: 4px; background: rgba(242,230,211,.16); overflow: hidden; }
+.seg > i { position: absolute; inset: 0; background: var(--amber); transform-origin: left; transform: scaleX(var(--f, 0)); }
+.seg.on { background: rgba(242,230,211,.3); }
+.seg-btn { position: relative; padding: 14px 0; margin: -14px 0; }
+.seg-btn span { position: absolute; left: -2px; right: -2px; top: -8px; bottom: -8px; }
+.segs .seg-btn { display: block; }
+
+.toast { position: absolute; left: 50%; bottom: calc(max(14px, env(safe-area-inset-bottom)) + 150px); transform: translate(-50%, 20px); opacity: 0; padding: 10px 16px; border-radius: 99px; background: var(--sand); color: var(--ink); font-size: 13px; font-weight: 600; pointer-events: none; transition: opacity var(--dur-base) var(--ease-settle), transform var(--dur-base) var(--ease-settle); z-index: 5; }
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+/* paisagem / telas baixas: info vira faixa compacta */
+@media (max-height: 640px) {
+  .info__sub { display: none; }
+  .info__title { font-size: 24px; }
+  .info__bar { margin-bottom: 8px; }
+  .cta { height: 46px; }
+  .s-pillar .giant { font-size: 84px; }
+}
+@media (orientation: landscape) and (max-height: 520px) {
+  .app { width: 100vw; max-width: none; grid-template-columns: minmax(180px, 34%) minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; }
+  .info { grid-row: 1 / 3; align-self: center; padding-right: 6px; }
+  .info__sub { display: block; font-size: 12px; }
+  .stage { grid-column: 2; }
+  .dock { grid-column: 2; padding-top: 0; }
+  .track { --sw: min(46cqw, 340px); }
+  .toast { bottom: 80px; }
+}
+
+/* acessibilidade: sem movimento = mesmo conteúdo, sem deslocamentos */
+@media (prefers-reduced-motion: reduce) {
+  .slide { transform: none !important; opacity: 1 !important; }
+  .slide .bg, .giant, .big, .ic, .photo { transform: none !important; }
+  .rv { opacity: 1; transform: none; transition: none; }
+  .brand i, .swipe i::after { animation: none; }
+}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <canvas id="fx" aria-hidden="true"></canvas>
+
+  <header class="info" aria-live="polite">
+    <div class="info__bar">
+      <div class="brand"><i></i>Igreja Família</div>
+      <div class="counter" id="counter"><b>01</b> / 00</div>
+    </div>
+    <p class="info__kicker" id="iKicker"></p>
+    <h1 class="info__title" id="iTitle"></h1>
+    <p class="info__sub" id="iSub"></p>
+  </header>
+
+  <main class="stage"><div class="track" id="track" tabindex="0" aria-label="Conteúdo da Igreja Família. Deslize para os lados."></div></main>
+
+  <footer class="dock">
+    <a class="cta" id="cta" href="#"><span class="cta__label" id="ctaLabel"></span>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    <div class="nav">
+      <button class="arrow" id="prev" aria-label="Slide anterior"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <div class="segs" id="segs" role="tablist" aria-label="Capítulos"></div>
+      <button class="arrow" id="next" aria-label="Próximo slide"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+    </div>
+  </footer>
+  <div class="toast" id="toast" role="status"></div>
+</div>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const $ = (s) => document.querySelector(s);
+
+  /* ---------------- conteúdo (dados reais do site) ---------------- */
+  const CHAPTERS = {
+    inicio:  { kicker: 'Bem-vindo',      title: 'Um lugar pra chamar de <em>lar</em>', sub: 'Nossas portas estão sempre abertas.', cta: { label: 'Conheça nossa história', go: 'somos' } },
+    somos:   { kicker: 'Quem somos',     title: 'Amar, servir, <em>restaurar</em>',    sub: 'Três pilares que sustentam a nossa família.', cta: { label: 'Ver programação', go: 'programacao' } },
+    programacao: { kicker: 'Programação', title: '__NEXT__', sub: 'Deslize para ver cada encontro.', cta: { label: 'Como chegar', go: 'onde' } },
+    redes:   { kicker: 'Nossas redes',   title: 'Fique <em>por perto</em>',           sub: 'Cultos, bastidores e novidades.', cta: { label: 'Abrir', href: 'ig' } },
+    contribua: { kicker: 'Contribua',    title: 'Semeie com <em>alegria</em>',        sub: '“Deus ama ao que dá com alegria.” 2 Co 9:7', cta: { label: 'Copiar chave Pix', copy: true } },
+    onde:    { kicker: 'Como chegar',    title: 'Av. Wallace Simonsen, 414',          sub: 'Nova Petrópolis · São Bernardo do Campo – SP', cta: { label: 'Abrir no Google Maps', href: 'https://www.google.com/maps/search/?api=1&query=Av.+Wallace+Simonsen%2C+414+-+Nova+Petr%C3%B3polis%2C+S%C3%A3o+Bernardo+do+Campo+-+SP%2C+09771-210' } },
+  };
+  const ORDER = Object.keys(CHAPTERS);
+
+  const SCHEDULE = [
+    { id: 'cultos', title: 'Cultos', icon: 'assets/logoBadge.jpg', entries: [['Quarta-feira', 3, '19h30'], ['Domingo', 0, '10h'], ['Domingo', 0, '18h30']] },
+    { id: 'saber',  title: 'Instituto Saber', icon: 'assets/iconInstitutoSaber.jpg', entries: [['Domingo', 0, '8h30']] },
+    { id: 'prospere', title: 'Prospere', icon: 'assets/iconProspere.jpg', entries: [['Todo Quarto Sábado do Mês', null, null]] },
+  ];
+  const PILLARS = [
+    ['Amar', 'Nosso Propósito', 'Manifestamos o amor de Deus em Cristo, pelo poder do Espírito Santo, servindo uns aos outros com dedicação e paixão.'],
+    ['Servir', 'Nossa Missão', 'Servimos de forma extraordinária, ultrapassando as quatro paredes e impactando todas as esferas da sociedade.'],
+    ['Restaurar', 'Nossa Visão', 'Valorizamos e cuidamos deste projeto extraordinário de Deus: a família. Transformamos pessoas comuns em discípulos extraordinários.'],
+  ];
+  const SOCIAL = [
+    ['Instagram', 'Fotos e bastidores do dia a dia', 'https://www.instagram.com/igrejafamilia.ofc', 'IG'],
+    ['Facebook', 'Novidades, eventos e comunidade', 'https://www.facebook.com/share/19MnJtm5ys/', 'FB'],
+    ['YouTube', 'Cultos e mensagens completas', 'https://youtube.com/@igrejafamiliasbc', 'YT'],
+  ];
+  const GIVING = [
+    ['Uma Nova Casa', 'Faça parte deste projeto! Doe através da chave Pix.', 'familiaemprojeto.ofc@gmail.com'],
+    ['Dízimos & Ofertas', 'Cada um contribua segundo propôs no seu coração.', 'igrejafamiliaa@gmail.com'],
+    ['Missão Família', 'Ajude nas ações sociais. Fale com o líder de missões, Paulo César.', 'missaoigrejafamiliaa@gmail.com'],
+  ];
+
+  /* ---------------- próximo culto (fuso de SBC) ---------------- */
+  function nextService(now = new Date()) {
+    const p = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Sao_Paulo', weekday: 'short', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(now);
+    const g = (t) => p.find((x) => x.type === t).value;
+    const cur = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].indexOf(g('weekday')) * 1440 + (+g('hour')) * 60 + (+g('minute'));
+    let best = null;
+    SCHEDULE.forEach((prog, pi) => prog.entries.forEach(([day, wd, t], ei) => {
+      if (wd === null) return;
+      const [h, m] = t.split('h'); const mins = wd * 1440 + (+h) * 60 + (+m || 0);
+      const wait = (mins - cur + 10080) % 10080;
+      if (!best || wait < best.wait) best = { pi, ei, wait, day, t };
+    }));
+    if (best) { const d = Math.floor(best.wait / 1440); best.when = d === 0 ? 'hoje' : d === 1 ? 'amanhã' : `em ${d} dias`; }
+    return best;
+  }
+  const next = nextService();
+  CHAPTERS.programacao.title = next ? `Próximo: <em>${next.day.split('-')[0]} ${next.t}</em>` : 'Venha <em>nos visitar</em>';
+  if (next) CHAPTERS.programacao.sub = `Começa ${next.when}. Deslize para ver cada encontro.`;
+
+  /* ---------------- montagem dos slides ---------------- */
+  const slides = []; // {el, ch, cta}
+  const track = $('#track');
+  const rv = (html, i) => `<div class="rv" style="--i:${i}">${html}</div>`;
+  function add(ch, cls, inner, extra = {}) {
+    const el = document.createElement('article');
+    el.className = `slide ${cls}`; el.innerHTML = inner;
+    track.appendChild(el); slides.push({ el, ch, ...extra });
+  }
+
+  add('inicio', 's-hero', `<div class="bg" style="--img:url(assets/heroChurchMobile.jpg)"></div>
+    <div class="in">${rv('<span class="chip">São Bernardo do Campo</span>', 0)}
+    ${rv('<h2 class="hero-t">Venha fazer parte<br>dessa <em>história</em></h2>', 1)}
+    ${rv('<p class="hero-p">Domingos às 10h e 18h30 · Quartas às 19h30</p>', 2)}
+    ${rv('<div class="swipe">Deslize <i></i></div>', 3)}</div>`);
+
+  PILLARS.forEach(([w, s, t], i) => add('somos', `s-pillar c${i + 1}`, `<div class="giant" aria-hidden="true">${w}</div>
+    <div class="in">${rv(`<span class="num">0${i + 1} / 03 · ${s}</span>`, 0)}${rv(`<h3>${w}</h3>`, 1)}${rv(`<p>${t}</p>`, 2)}</div>`));
+
+  SCHEDULE.forEach((prog, pi) => {
+    const lis = prog.entries.map(([day, , t], ei) => {
+      const isNext = next && next.pi === pi && next.ei === ei;
+      return `<li class="${isNext ? 'next' : ''}"><span>${day}</span>${t ? `<b>${t}</b>` : ''}</li>`;
+    }).join('');
+    add('programacao', 's-prog', `<div class="in">${rv(`<div class="ic" style="background-image:url(${prog.icon})"></div>`, 0)}
+      ${rv(`<span class="eyebrow" style="margin-top:14px;display:block">Programação</span>`, 1)}${rv(`<h3>${prog.title}</h3>`, 2)}${rv(`<ul class="times">${lis}</ul>`, 3)}</div>`);
+  });
+
+  SOCIAL.forEach(([n, tag, href, ab], i) => add('redes', 's-social', `<div class="in">${rv(`<div class="big" aria-hidden="true">${ab}</div>`, 0)}
+    <div>${rv(`<h3>${n}</h3>`, 1)}${rv(`<p>${tag}</p>`, 2)}${rv(`<a class="link" href="${href}" target="_blank" rel="noopener">Abrir ${n} →</a>`, 3)}</div></div>`, { href }));
+
+  GIVING.forEach(([t, d, key]) => add('contribua', 's-give', `<div class="in">${rv(`<span class="eyebrow">Chave Pix</span>`, 0)}${rv(`<h3>${t}</h3>`, 1)}${rv(`<p>${d}</p>`, 2)}
+    ${rv(`<div class="pix">${key}</div>`, 3)}${rv(`<button class="copy" data-key="${key}">Copiar chave</button>`, 4)}</div>`, { key }));
+
+  add('onde', 's-where', `<div class="in">${rv('<div class="photo" style="background-image:url(assets/churchBuilding.jpg)"></div>', 0)}
+    ${rv('<span class="eyebrow">Estamos esperando você</span>', 1)}${rv('<h3>Nova Petrópolis</h3>', 2)}${rv('<p>Av. Wallace Simonsen, 414<br>São Bernardo do Campo – SP · 09771-210</p>', 3)}</div>`);
+
+  /* ---------------- dock: segmentos por capítulo ---------------- */
+  const segsEl = $('#segs'); const segs = {};
+  ORDER.forEach((id) => {
+    const first = slides.findIndex((s) => s.ch === id), count = slides.filter((s) => s.ch === id).length;
+    const b = document.createElement('button'); b.className = 'seg-btn'; b.style.flex = count; b.setAttribute('aria-label', CHAPTERS[id].kicker);
+    b.innerHTML = '<div class="seg"><i></i></div>'; b.onclick = () => goTo(first);
+    segsEl.appendChild(b); segs[id] = { first, count, seg: b.firstChild, fill: b.querySelector('i') };
+  });
+
+  /* ---------------- navegação ---------------- */
+  let stride = 1, offsets = [], cur = -1, curCh = '';
+  const measure = () => { stride = slides.length > 1 ? slides[1].el.offsetLeft - slides[0].el.offsetLeft : 1; offsets = slides.map((s) => s.el.offsetLeft + s.el.offsetWidth / 2); };
+  const goTo = (i, smooth = true) => track.scrollTo({ left: Math.max(0, Math.min(slides.length - 1, i)) * stride, behavior: reduce || !smooth ? 'auto' : 'smooth' });
+  $('#prev').onclick = () => goTo(cur - 1); $('#next').onclick = () => goTo(cur + 1);
+  track.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') { e.preventDefault(); goTo(cur + 1); } if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(cur - 1); } });
+
+  /* ---------------- info acima: troca com máscara de movimento ---------------- */
+  const iK = $('#iKicker'), iT = $('#iTitle'), iS = $('#iSub');
+  function swapInfo(id) {
+    const c = CHAPTERS[id];
+    const apply = () => { iK.textContent = c.kicker; iT.innerHTML = c.title; iS.textContent = c.sub; };
+    if (!curCh || reduce) { apply(); return; }
+    const els = [iK, iT, iS];
+    const out = els.map((e) => e.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'translate3d(-18px,0,0)' }], { duration: 160, easing: 'cubic-bezier(.65,0,.35,1)', fill: 'forwards' }));
+    out[0].finished.then(() => {
+      apply();
+      els.forEach((e, i) => { e.getAnimations().forEach((a) => a.cancel()); e.animate([{ opacity: 0, transform: 'translate3d(22px,0,0)' }, { opacity: 1, transform: 'none' }], { duration: 560, delay: i * 70, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'backwards' }); });
+    }).catch(() => apply());
+  }
+
+  /* ---------------- CTA contextual ---------------- */
+  const cta = $('#cta'), ctaLabel = $('#ctaLabel');
+  function updateCta() {
+    const s = slides[cur], c = CHAPTERS[s.ch].cta; cta.removeAttribute('target'); cta.removeAttribute('rel');
+    let label = c.label, href = '#';
+    if (c.href === 'ig') { href = s.href; label = 'Abrir ' + (s.el.querySelector('h3')?.textContent || ''); cta.target = '_blank'; cta.rel = 'noopener'; }
+    else if (c.href) { href = c.href; cta.target = '_blank'; cta.rel = 'noopener'; }
+    ctaLabel.textContent = label; cta.setAttribute('href', href);
+    cta.onclick = (e) => {
+      if (c.go) { e.preventDefault(); goTo(segs[c.go].first); }
+      else if (c.copy) { e.preventDefault(); copy(s.key, s.el.querySelector('.copy')); }
+    };
+    if (!reduce) ctaLabel.animate([{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'none' }], { duration: 380, easing: 'cubic-bezier(.16,1,.3,1)' });
+  }
+
+  /* ---------------- Pix: cópia com feedback ---------------- */
+  const toast = $('#toast'); let tt;
+  async function copy(key, btn) {
+    try { await navigator.clipboard.writeText(key); } catch { const t = document.createElement('textarea'); t.value = key; document.body.appendChild(t); t.select(); try { document.execCommand('copy'); } catch {} t.remove(); }
+    if (btn) { btn.classList.add('ok'); const old = btn.textContent; btn.textContent = 'Copiado ✓'; setTimeout(() => { btn.classList.remove('ok'); btn.textContent = old; }, 1800); }
+    toast.textContent = 'Chave Pix copiada'; toast.classList.add('show'); clearTimeout(tt); tt = setTimeout(() => toast.classList.remove('show'), 1800);
+    try { navigator.vibrate?.(12); } catch {}
+  }
+  track.addEventListener('click', (e) => { const b = e.target.closest('.copy'); if (b) copy(b.dataset.key, b); });
+
+  /* ---------------- loop de scroll: --p por slide, progresso, estado ativo ---------------- */
+  let vel = 0, lastX = 0, ticking = false;
+  function frame() {
+    ticking = false;
+    const x = track.scrollLeft, center = x + track.clientWidth / 2;
+    vel = x - lastX; lastX = x;
+    for (let i = 0; i < slides.length; i++) {
+      const p = (offsets[i] - center) / stride;
+      if (Math.abs(p) > 2.2) continue; // fora da tela: não recalcula
+      const el = slides[i].el; el.style.setProperty('--p', p.toFixed(3)); el.style.setProperty('--abs', Math.min(1, Math.abs(p)).toFixed(3));
+    }
+    const f = x / stride, idx = Math.max(0, Math.min(slides.length - 1, Math.round(f)));
+    ORDER.forEach((id) => { const s = segs[id]; s.fill.parentNode.style.setProperty('--f', 0); s.fill.style.setProperty('--f', Math.max(0, Math.min(1, (f - s.first + 1) / s.count)).toFixed(3)); s.fill.style.transform = `scaleX(${Math.max(0, Math.min(1, (f - s.first + 1) / s.count)).toFixed(3)})`; s.seg.classList.toggle('on', slides[idx].ch === id); });
+    if (idx !== cur) {
+      cur = idx; const s = slides[idx];
+      slides.forEach((o, i) => { o.el.classList.toggle('is-active', i === idx); });
+      s.el.classList.add('seen');
+      $('#counter').innerHTML = `<b>${String(idx + 1).padStart(2, '0')}</b> / ${String(slides.length).padStart(2, '0')}`;
+      $('#prev').disabled = idx === 0; $('#next').disabled = idx === slides.length - 1;
+      if (s.ch !== curCh) { swapInfo(s.ch); curCh = s.ch; }
+      updateCta();
+      try { if (navigator.userActivation?.hasBeenActive) navigator.vibrate?.(6); } catch {}
+    }
+  }
+  const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(frame); } };
+  if (!reduce) track.addEventListener('scroll', onScroll, { passive: true });
+  else track.addEventListener('scroll', () => { requestAnimationFrame(frame); }, { passive: true });
+  addEventListener('resize', () => { measure(); frame(); });
+
+  /* ---------------- fundo vivo: brasas à deriva que reagem à velocidade do gesto ---------------- */
+  const cv = $('#fx'), g = cv.getContext('2d'); let W = 0, H = 0, dots = [], raf = 0, visible = true;
+  function size() { const r = cv.getBoundingClientRect(), d = Math.min(devicePixelRatio || 1, 2); W = r.width; H = r.height; cv.width = W * d; cv.height = H * d; g.setTransform(d, 0, 0, d, 0, 0); }
+  function seed() { dots = Array.from({ length: 34 }, () => ({ x: Math.random() * W, y: Math.random() * H, r: .6 + Math.random() * 2.2, z: .3 + Math.random() * .9, t: Math.random() * 6.28 })); }
+  function draw(now) {
+    raf = requestAnimationFrame(draw); if (!visible) return;
+    const v = Math.max(-40, Math.min(40, track.scrollLeft - (draw.last ?? track.scrollLeft))); draw.last = track.scrollLeft; draw.v = (draw.v || 0) * .88 + v * .12;
+    g.clearRect(0, 0, W, H);
+    for (const d of dots) {
+      d.x -= draw.v * d.z * 1.4 + .08 * d.z; d.y -= .12 * d.z + Math.abs(draw.v) * .05; d.t += .02;
+      if (d.x < -10) d.x = W + 10; if (d.x > W + 10) d.x = -10; if (d.y < -10) { d.y = H + 10; d.x = Math.random() * W; }
+      const a = (.25 + .35 * Math.sin(d.t)) * d.z; g.beginPath(); g.fillStyle = `rgba(240,179,92,${Math.max(.06, a).toFixed(2)})`; g.arc(d.x, d.y, d.r * d.z, 0, 6.283); g.fill();
+      if (Math.abs(draw.v) > 3) { g.strokeStyle = `rgba(240,179,92,${Math.min(.25, Math.abs(draw.v) / 80).toFixed(2)})`; g.lineWidth = d.r * d.z * .8; g.beginPath(); g.moveTo(d.x, d.y); g.lineTo(d.x + draw.v * d.z * 3, d.y); g.stroke(); }
+    }
+  }
+  if (!reduce) { size(); seed(); raf = requestAnimationFrame(draw); addEventListener('resize', () => { size(); seed(); }); document.addEventListener('visibilitychange', () => { visible = !document.hidden; }); }
+
+  /* ---------------- boot ---------------- */
+  measure(); track.scrollLeft = 0; frame();
+  document.fonts?.ready.then(() => { measure(); frame(); });
+  if (!reduce) slides.forEach((s, i) => s.el.animate([{ opacity: 0, translate: '60px 0' }, { opacity: 1, translate: '0 0' }], { duration: 900, delay: 120 + i * 60, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'backwards' }));
+})();
+</script>
+</body>
+</html>
