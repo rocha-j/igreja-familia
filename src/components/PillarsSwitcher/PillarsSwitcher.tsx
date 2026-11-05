@@ -90,7 +90,7 @@ export function PillarsSwitcher() {
     <section
       id="pilares"
       ref={root}
-      className={`section section--alt pillars-section ${scrollDriven ? 'is-pinned' : ''}`}
+      className={`section pillars-section ${scrollDriven ? 'is-pinned' : ''}`}
     >
       <div ref={pin} className="pillars-section__pin">
         <div className="container">
@@ -109,8 +109,8 @@ export function PillarsSwitcher() {
                   className={`pillars__tab ${index === active ? 'is-active' : ''}`}
                   onClick={() => selectPillar(index)}
                 >
-                  <span className="pillars__tab-word">{pillar.word}</span>
                   <span className="pillars__tab-subtitle">{pillar.subtitle}</span>
+                  <span className="pillars__tab-word">{pillar.word}</span>
                   <span className="pillars__tab-track">
                     {scrollDriven ? (
                       <span
@@ -159,6 +159,7 @@ export function PillarsSwitcher() {
                   transition={transition.base}
                   className="pillars__panel"
                 >
+                  <span className="pillars__panel-label">{current.word}</span>
                   <p className="pillars__panel-text">{current.text}</p>
                 </motion.div>
               </AnimatePresence>
