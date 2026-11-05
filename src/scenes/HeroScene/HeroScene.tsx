@@ -72,9 +72,9 @@ const PARTICLE_VERTEX = /* glsl */ `
   varying float vA;
   void main() {
     vec3 p = position;
-    p.y = mod(p.y + 1.0 + uTime * 0.035 * aSeed.x + uScroll * 0.5 * aSeed.x, 2.0) - 1.0;
-    p.x += sin(uTime * 0.4 + aSeed.y) * 0.04;
-    vA = smoothstep(-1.0, -0.6, p.y) * (1.0 - smoothstep(0.5, 1.0, p.y)) * (0.35 + 0.65 * aSeed.x);
+    p.y = mod(p.y + 1.0 + uTime * 0.11 * aSeed.x + uScroll * 0.5 * aSeed.x, 2.0) - 1.0;
+    p.x += sin(uTime * 0.9 + aSeed.y) * 0.06 + sin(uTime * 0.35 + aSeed.y * 2.0) * 0.03;
+    vA = smoothstep(-1.0, -0.6, p.y) * (1.0 - smoothstep(0.5, 1.0, p.y)) * (0.35 + 0.65 * aSeed.x) * (0.72 + 0.28 * sin(uTime * 1.6 + aSeed.y * 3.0));
     gl_Position = vec4(p.xy, 0.0, 1.0);
     gl_PointSize = (2.0 + aSeed.x * 6.0) * uPx;
   }

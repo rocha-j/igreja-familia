@@ -1,6 +1,7 @@
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import heroMobile from '../assets/heroChurchMobile.jpg';
+import logoBadge from '../assets/logoBadge.jpg';
 import { pillars } from '../data/pillars';
 import { schedule } from '../data/schedule';
 import { socialLinks } from '../data/socialLinks';
@@ -390,14 +391,7 @@ export function MobilePage() {
     <div className="mx-root">
       <div className="mx">
         <div className="bar">
-          <div className="brand"><i />Igreja Família</div>
-          <div className="counter"><b>{String(active + 1).padStart(2, '0')}</b> / {String(count).padStart(2, '0')}</div>
-        </div>
-
-        <div className="rail" aria-hidden="true">
-          {modules.map((m, i) => (
-            <span key={m.id} className={i === active ? 'on' : ''} />
-          ))}
+          <div className="brand"><img className="brand__mark" src={logoBadge} alt="" />Igreja Família</div>
         </div>
 
         <div
@@ -484,20 +478,6 @@ export function MobilePage() {
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
             </a>
           ) : null}
-          <div className="nav">
-            <div className="subnav" aria-hidden="true">
-              {mod.items.length > 1 ? (
-                <>
-                  {mod.items.map((it, k) => (
-                    <span key={it.key} className={`dot${k === subIdx ? ' on' : ''}`} />
-                  ))}
-                  <span className="subcount">{subIdx + 1}/{mod.items.length}</span>
-                </>
-              ) : (
-                <span className="subcount" />
-              )}
-            </div>
-          </div>
         </footer>
 
         <canvas ref={canvasRef} className="fx" aria-hidden="true" />

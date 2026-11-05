@@ -15,8 +15,8 @@
   --ease-inout: var(--ease-in-out);
   --ease-spring: var(--ease-soft);
   --gx: max(18px, env(safe-area-inset-left), env(safe-area-inset-right));
-  --top: calc(max(12px, env(safe-area-inset-top)) + 44px);
-  --bottom: calc(max(14px, env(safe-area-inset-bottom)) + 124px);
+  --top: calc(max(12px, env(safe-area-inset-top)) + 56px);
+  --bottom: calc(max(14px, env(safe-area-inset-bottom)) + 84px);
 
   /* Height follows the fixed root (inset: 0) instead of dvh/svh, so it never
      disagrees with the browser UI collapsing on iOS/Android. */
@@ -32,25 +32,13 @@
 
   /* ---------- overlays fixos: barra, trilho vertical, dock ---------- */
   & .bar { position: absolute; z-index: 20; top: 0; left: 0; right: 0; display: flex; align-items: center; justify-content: space-between; padding: max(12px, env(safe-area-inset-top)) var(--gx) 22px; background: linear-gradient(180deg, rgba(20,22,13,.7), rgba(20,22,13,0)); pointer-events: none; }
-  & .brand { display: flex; align-items: center; gap: 8px; font-family: var(--font-display); font-weight: 700; font-size: 15px; letter-spacing: -.01em; }
-  & .brand i { width: 8px; height: 8px; border-radius: 50%; background: var(--amber); animation: mx-beacon 2.6s var(--ease-inout) 3; }
-  & .counter { font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; color: rgba(242,230,211,.65); font-variant-numeric: tabular-nums; }
-  & .counter b { color: var(--sand); font-weight: 500; }
-  & .rail { position: absolute; z-index: 20; right: 5px; top: 50%; transform: translateY(-50%); display: grid; gap: 4px; }
-  & .rail { pointer-events: none; }
-  & .rail span { position: relative; width: 14px; height: 18px; display: grid; place-items: center; }
-  & .rail span::after { content: ""; width: 4px; height: 4px; border-radius: 4px; background: rgba(242,230,211,.45); transition: height var(--duration-base) var(--ease-settle), background var(--duration-fast); }
-  & .rail span.on::after { height: 16px; background: var(--amber); }
+  & .brand { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 800; font-size: 18px; letter-spacing: -.01em; }
+  & .brand__mark { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
 
-  & .dock { position: absolute; z-index: 20; left: 0; right: 0; bottom: 0; padding: 40px var(--gx) max(14px, env(safe-area-inset-bottom)); display: grid; gap: 12px; background: linear-gradient(180deg, rgba(20,22,13,0), rgba(20,22,13,.88) 48%); }
-  & .cta { display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 54px; padding: 0 20px; border-radius: 99px; background: var(--sand); color: var(--ink); font-weight: 600; font-size: 15px; transition: transform var(--duration-quick) var(--ease-settle); }
+  & .dock { pointer-events: none; position: absolute; z-index: 20; left: 0; right: 0; bottom: 0; padding: 40px var(--gx) max(14px, env(safe-area-inset-bottom)); display: grid; gap: 12px; background: linear-gradient(180deg, rgba(20,22,13,0), rgba(20,22,13,.88) 48%); }
+  & .cta { pointer-events: auto; display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 54px; padding: 0 20px; border-radius: 99px; background: var(--sand); color: var(--ink); font-weight: 600; font-size: 15px; transition: transform var(--duration-quick) var(--ease-settle); }
   & .cta:active { transform: scale(.97); }
   & .cta__label { animation: mx-pop-in var(--duration-fast) var(--ease-settle); }
-  & .nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 40px; }
-  & .subnav { pointer-events: none; display: flex; align-items: center; gap: 8px; }
-  & .dot { width: 22px; height: 6px; border-radius: 6px; background: rgba(242,230,211,.2); transition: width var(--duration-base) var(--ease-settle), background var(--duration-fast); position: relative; }
-  & .dot.on { width: 38px; background: var(--amber); }
-  & .subcount { font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; color: rgba(242,230,211,.6); margin-left: 4px; }
   & .fx { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none; }
   & .toast { position: absolute; z-index: 30; left: 50%; bottom: calc(var(--bottom) + 8px); transform: translate(-50%, 20px); opacity: 0; padding: 10px 16px; border-radius: 99px; background: var(--sand); color: var(--ink); font-size: 13px; font-weight: 600; pointer-events: none; transition: opacity var(--duration-base) var(--ease-settle), transform var(--duration-base) var(--ease-settle); }
   & .toast.show { opacity: 1; transform: translate(-50%, 0); }
@@ -256,7 +244,7 @@
 @keyframes mx-card-in { from { opacity: 0; } to { opacity: 1; } }
 
 @media (max-height: 640px) {
-  .mx { --bottom: calc(max(14px, env(safe-area-inset-bottom)) + 108px); }
+  .mx { --bottom: calc(max(14px, env(safe-area-inset-bottom)) + 70px); }
   .mx .info__sub { display: none; }
   .mx .cta { height: 46px; }
   .mx .giant { font-size: 96px; }
