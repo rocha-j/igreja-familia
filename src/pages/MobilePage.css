@@ -69,10 +69,9 @@
   & .sec--redes { background: radial-gradient(120% 60% at 100% 0%, #7b431e, #4a2a14 55%, #2a170a); }
   & .sec--contribua { background: radial-gradient(120% 60% at 0% 0%, #4a5033, var(--moss) 55%, var(--moss-deep)); }
 
-  /* módulos-cena (sem card): ficam parados e são REVELADOS por um portal circular guiado pelo scroll */
+  /* módulos-cena (Início, Como chegar): entram pela rolagem como qualquer módulo e o anterior recua (nunca se sobrepõem em repouso) */
   & .sec--bleed {
-    transform: translate3d(0, calc((var(--cov, 0) - var(--vp, 0)) * 100%), 0);
-    opacity: calc(.15 + .85 * (1 - var(--vp, 0)));
+    transform: translate3d(0, calc(var(--cov, 0) * 100%), 0) scale(calc(1 - .08 * var(--cov, 0)));
     justify-content: flex-start; background: #14160d;
   }
   & .scene { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
@@ -87,8 +86,7 @@
      fallback in MobilePage.tsx keep working, and nothing here is needed to read. */
   @supports (animation-timeline: view()) {
     & .slot { view-timeline: --slot block; }
-    & .sec--cards, & .sec--text { animation: mx-stack linear both; animation-timeline: --slot; animation-range: cover; }
-    & .sec--bleed { animation: mx-portal linear both; animation-timeline: --slot; animation-range: cover; }
+    & .sec--cards, & .sec--text, & .sec--bleed { animation: mx-stack linear both; animation-timeline: --slot; animation-range: cover; }
     & .sec--bleed .photo { animation: mx-zoom linear both; animation-timeline: --slot; animation-range: cover; }
     & .sec::after { animation: mx-dim linear both; animation-timeline: --slot; animation-range: cover; }
   }
@@ -114,14 +112,13 @@
   & .full { margin: auto var(--gx) 0; align-self: flex-start; font-weight: 600; font-size: 14px; color: var(--amber); }
 
   /* ---------- navegação horizontal dentro do módulo (cards de largura total) ---------- */
-  & .track { flex: 1; min-height: 0; margin-top: 18px; display: flex; gap: 12px; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; scrollbar-width: none; padding: 0 var(--gx); scroll-padding-inline: var(--gx); touch-action: pan-x pan-y; }
+  & .track { flex: 1; min-height: 0; margin-top: 18px; display: flex; gap: 12px; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; scrollbar-width: none; padding: 0 var(--gx); scroll-padding-inline: var(--gx); }
   & .track::-webkit-scrollbar { display: none; }
   & .card { position: relative; flex: 0 0 calc(100cqw - 2 * var(--gx)); scroll-snap-align: center; scroll-snap-stop: always; border-radius: 28px; overflow: hidden; isolation: isolate; color: var(--ink); background: var(--card); box-shadow: 0 24px 40px -18px rgba(0,0,0,.6); }
   & .sec:not(.seen) .card { opacity: 0; }
   & .sec.seen .card { animation: mx-card-in 1s var(--ease-settle) backwards; animation-delay: calc(var(--k, 0) * 90ms + 200ms); }
 
-  & .in { height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding: 24px 22px 22px; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; }
-  & .in::-webkit-scrollbar { display: none; }
+  & .in { height: 100%; display: flex; flex-direction: column; justify-content: flex-end; padding: 24px 22px 22px; overflow: hidden; }
   & .eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--brown); }
   & .in h3 { font-family: var(--font-display); font-weight: 800; font-size: 32px; letter-spacing: -.03em; line-height: 1.02; margin: 8px 0 8px; color: var(--ink); }
   & .in p { font-size: 14px; line-height: 1.5; color: var(--ink-soft); }
@@ -160,7 +157,7 @@
   & .cal__head span { font-family: var(--font-mono); font-size: 11px; letter-spacing: .06em; color: var(--brown); }
   & .cal__grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
   & .cal__h { text-align: center; font-family: var(--font-mono); font-size: 10px; opacity: .6; padding-bottom: 2px; }
-  & .cal__d { aspect-ratio: 1; display: grid; place-items: center; border-radius: 50%; font-size: 12px; color: var(--ink-soft); }
+  & .cal__d { height: 32px; display: grid; place-items: center; border-radius: 50%; font-size: 12px; color: var(--ink-soft); }
   & .cal__d.hit { background: var(--brown); color: #fff; font-weight: 700; animation: mx-glow 2.2s var(--ease-inout) 4; }
   & .cal__d.today { box-shadow: 0 0 0 2px var(--amber) inset; }
   & .times { list-style: none; margin-top: auto; display: grid; gap: 8px; }
@@ -239,11 +236,6 @@
 @keyframes mx-stack {
   0%, 50% { transform: translate3d(0, 0, 0) scale(1); }
   100% { transform: translate3d(0, 100%, 0) scale(.92); }
-}
-@keyframes mx-portal {
-  0% { transform: translate3d(0, -100%, 0); opacity: .15; }
-  50% { transform: translate3d(0, 0, 0); opacity: 1; }
-  100% { transform: translate3d(0, 100%, 0); opacity: 1; }
 }
 @keyframes mx-zoom {
   0% { transform: scale(1.4) translate3d(0, 0, 0); }

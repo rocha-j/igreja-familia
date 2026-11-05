@@ -25,8 +25,12 @@ export function ScrollProvider({ children }: { children: ReactNode }) {
   const lenisRef = useRef<Lenis | null>(null);
   const { pathname } = useLocation();
 
+  // /m owns its scrolling (snap-driven pages + horizontal card tracks): Lenis would
+  // hijack the wheel on the document and keep it from reaching those scrollers.
+  const nativeScroll = pathname === '/m';
+
   useEffect(() => {
-    if (reduced) return;
+    if (reduced || nativeScroll) return;
     const instance = new Lenis({ lerp: scroll.lerp, smoothWheel: true });
     const tick = (time: number) => instance.raf(time * 1000);
     instance.on('scroll', ScrollTrigger.update);
@@ -38,7 +42,7 @@ export function ScrollProvider({ children }: { children: ReactNode }) {
       instance.destroy();
       lenisRef.current = null;
     };
-  }, [reduced]);
+  }, [reduced, nativeScroll]);
 
   const scrollTo = useCallback((target: number | HTMLElement) => {
     const y = typeof target === 'number' ? target : targetTop(target);
