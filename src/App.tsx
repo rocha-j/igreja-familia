@@ -1,10 +1,12 @@
 import { motion } from 'framer-motion';
-import { useLayoutEffect, useRef } from 'react';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { useLayoutEffect, useRef, useState } from 'react';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { duration, ease } from './motion/tokens';
 import { DoacoesPage } from './pages/DoacoesPage';
 import { HomePage } from './pages/HomePage';
+import { MobilePage } from './pages/MobilePage';
 import { NewMembersPage } from './pages/NewMembersPage';
+import { shouldUseMobileExperience } from './utils/mobile';
 
 function App() {
   const { pathname, hash, key } = useLocation();
@@ -13,6 +15,8 @@ function App() {
   // gives the initial history entry the key "default".
   const routeChanged = key !== 'default';
   const previousPathname = useRef(pathname);
+  // Phones that open the site root land on the horizontal mobile experience (once per tab).
+  const [sendToMobile] = useState(() => !routeChanged && pathname === '/' && !hash && shouldUseMobileExperience());
 
   // A new page starts from the top, unless the URL points at an in-page anchor.
   useLayoutEffect(() => {
@@ -34,7 +38,8 @@ function App() {
       transition={{ duration: duration.base, ease }}
     >
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={sendToMobile ? <Navigate to="/m" replace /> : <HomePage />} />
+        <Route path="/m" element={<MobilePage />} />
         <Route path="/novos-membros" element={<NewMembersPage />} />
         <Route path="/doacoes" element={<DoacoesPage />} />
       </Routes>

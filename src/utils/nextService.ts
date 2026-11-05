@@ -36,6 +36,14 @@ function nowInChurchTime(now: Date): { weekday: number; minutes: number } {
 
 /** Index of the entry that starts next (wrapping into next week), or null. */
 export function getNextEntryIndex(entries: ScheduleEntry[], now: Date = new Date()): number | null {
+  return getNextEntry(entries, now)?.index ?? null;
+}
+
+/** The next entry plus the minutes until it starts, or null. */
+export function getNextEntry(
+  entries: ScheduleEntry[],
+  now: Date = new Date(),
+): { index: number; wait: number } | null {
   const current = nowInChurchTime(now);
   const currentMinuteOfWeek = current.weekday * 1440 + current.minutes;
   const week = 7 * 1440;
@@ -50,5 +58,10 @@ export function getNextEntryIndex(entries: ScheduleEntry[], now: Date = new Date
     if (best === null || wait < best.wait) best = { index, wait };
   });
 
-  return best === null ? null : (best as { index: number }).index;
+  return best;
+}
+
+/** Weekday index (0 = Sunday) for a schedule day name such as "Quarta-feira", or undefined. */
+export function weekdayOf(day: string): number | undefined {
+  return WEEKDAYS[day.toLowerCase()];
 }
