@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { navigation } from '../../data/navigation';
 import { socialLinks } from '../../data/socialLinks';
+import { DESKTOP_FLAG } from '../../utils/mobile';
 import logoBadge from '../../assets/logoBadge.jpg';
 import { SocialIcon } from '../SocialIcon/SocialIcon';
 import { NavAnchor } from '../NavAnchor/NavAnchor';
@@ -63,6 +64,13 @@ export function Footer() {
 
       <div className="container footer__bottom">
         <span>© 2021 Igreja Família. Todos os direitos reservados.</span>
+        <Link
+          to="/m"
+          className="link-underline"
+          onClick={() => { try { sessionStorage.removeItem(DESKTOP_FLAG); } catch { /* storage blocked */ } }}
+        >
+          Versão para celular
+        </Link>
         <span>Desenvolvido por Jeferson Rocha</span>
       </div>
     </footer>
