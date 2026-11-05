@@ -43,14 +43,28 @@
   pointer-events: none;
 }
 
-.schedule-card:hover {
-  transform: translateY(-10px);
-  border-color: var(--accent);
-  box-shadow: 0 38px 50px -16px rgba(60, 40, 20, 0.36);
-}
+/* Hover effects only on devices that truly hover: on touch screens :hover
+   sticks after a tap and leaves the card stuck in the lifted state. */
+@media (hover: hover) {
+  .schedule-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--accent);
+    box-shadow: 0 38px 50px -16px rgba(60, 40, 20, 0.36);
+  }
 
-.schedule-card:hover::before {
-  transform: scaleX(1);
+  .schedule-card:hover::before {
+    transform: scaleX(1);
+  }
+
+  .schedule-card:hover .schedule-card__icon-wrap::before {
+    border-color: var(--accent);
+    transform: scale(1.05);
+  }
+
+  .schedule-card:hover .schedule-card__icon-frame {
+    transform: scale(1.08) rotate(-6deg);
+    border-color: var(--accent);
+  }
 }
 
 .schedule-card__icon-wrap {
@@ -73,11 +87,6 @@
     transform var(--duration-fast) var(--ease-premium);
 }
 
-.schedule-card:hover .schedule-card__icon-wrap::before {
-  border-color: var(--accent);
-  transform: scale(1.05);
-}
-
 .schedule-card__icon-frame {
   position: relative;
   z-index: 1;
@@ -89,11 +98,6 @@
   background: var(--bg-primary);
   transition: transform var(--duration-fast) var(--ease-premium),
     border-color var(--duration-fast) var(--ease-premium);
-}
-
-.schedule-card:hover .schedule-card__icon-frame {
-  transform: scale(1.08) rotate(-6deg);
-  border-color: var(--accent);
 }
 
 .schedule-card__icon {

@@ -1,4 +1,5 @@
 ﻿import { motion } from 'framer-motion';
+import { distance, transition } from '../../motion/tokens';
 import { AnimatedText } from '../AnimatedText/AnimatedText';
 import './HeroSection.css';
 
@@ -20,9 +21,9 @@ export function HeroSection() {
 
           <motion.p
             className="hero__text"
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: distance.sm }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.9, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ ...transition.base, delay: 0.9 }}
           >
             Nossas portas estão sempre abertas. Venha conhecer a Igreja Família e fazer parte dessa
             história.
@@ -30,9 +31,9 @@ export function HeroSection() {
 
           <motion.div
             className="hero__actions"
-            initial={{ opacity: 0, y: 16 }}
+            initial={{ opacity: 0, y: distance.sm }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 1.05, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ ...transition.base, delay: 1.05 }}
           >
             <a href="#onde-estamos" className="btn btn-primary">
               Como Chegar
@@ -50,7 +51,7 @@ export function HeroSection() {
         aria-label="Role para baixo e descubra"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.7, delay: 1.3 }}
+        transition={{ duration: 0.6, delay: 1.3 }}
       >
         <span className="hero__scroll-circle">
           <span className="hero__scroll-dot" />

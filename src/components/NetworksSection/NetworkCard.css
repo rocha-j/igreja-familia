@@ -21,7 +21,12 @@
     box-shadow var(--duration-fast) var(--ease-premium);
 }
 
-.network-card__link:hover {
+.network-card__link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.network-card__link:is(:hover, :focus-visible) {
   transform: translateY(-10px);
   border-color: var(--accent);
   box-shadow: 0 38px 50px -16px rgba(60, 40, 20, 0.36);
@@ -52,7 +57,7 @@
     border-color var(--duration-fast) var(--ease-premium);
 }
 
-.network-card__link:hover .network-card__icon {
+.network-card__link:is(:hover, :focus-visible) .network-card__icon {
   transform: scale(1.08) rotate(-6deg);
   border-color: var(--accent);
 }
@@ -88,7 +93,7 @@
     border-color var(--duration-fast) var(--ease-premium);
 }
 
-.network-card__link:hover .network-card__arrow {
+.network-card__link:is(:hover, :focus-visible) .network-card__arrow {
   transform: translateX(4px);
   color: var(--accent);
   border-color: var(--accent);

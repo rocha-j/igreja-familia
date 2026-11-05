@@ -1,5 +1,6 @@
 ﻿import { motion } from 'framer-motion';
 import type { ReactNode } from 'react';
+import { stagger, transition } from '../../motion/tokens';
 
 interface AnimatedTextProps {
   text: string;
@@ -16,7 +17,7 @@ function renderWord(word: string, isAccent: boolean, key: number) {
         style={{ display: 'inline-block', color: isAccent ? 'var(--accent)' : undefined }}
         variants={{
           hidden: { y: '110%' },
-          visible: { y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } },
+          visible: { y: 0, transition: transition.slow },
         }}
       >
         {word}&nbsp;
@@ -39,7 +40,7 @@ export function AnimatedText({ text, className, accentWords = [], delay = 0, as 
     initial: 'hidden',
     whileInView: 'visible',
     viewport: { once: false, amount: 0.5 },
-    transition: { staggerChildren: 0.06, delayChildren: delay },
+    transition: { staggerChildren: stagger.tight, delayChildren: delay },
   } as const;
 
   if (as === 'h1') return <motion.h1 {...motionProps}>{content}</motion.h1>;

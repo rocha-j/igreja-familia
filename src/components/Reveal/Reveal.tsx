@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import type { ReactNode } from 'react';
+import { distance, stagger, transition } from '../../motion/tokens';
 
 interface RevealProps {
   children: ReactNode;
@@ -9,12 +10,12 @@ interface RevealProps {
   as?: 'div' | 'span';
 }
 
-export function Reveal({ children, delay = 0, y = 28, className, as = 'div' }: RevealProps) {
+export function Reveal({ children, delay = 0, y = distance.lg, className, as = 'div' }: RevealProps) {
   const animation = {
     initial: { opacity: 0, y },
     whileInView: { opacity: 1, y: 0 },
     viewport: { once: false, amount: 0.3 },
-    transition: { duration: 0.7, delay, ease: [0.16, 1, 0.3, 1] },
+    transition: { ...transition.base, delay },
   } as const;
 
   if (as === 'span') {
@@ -38,7 +39,7 @@ interface StaggerProps {
   staggerDelay?: number;
 }
 
-export function StaggerGroup({ children, className, staggerDelay = 0.08 }: StaggerProps) {
+export function StaggerGroup({ children, className, staggerDelay = stagger.base }: StaggerProps) {
   return (
     <motion.div
       className={className}
@@ -55,13 +56,13 @@ export function StaggerGroup({ children, className, staggerDelay = 0.08 }: Stagg
   );
 }
 
-export function StaggerItem({ children, className, y = 24 }: RevealProps) {
+export function StaggerItem({ children, className, y = distance.md }: RevealProps) {
   return (
     <motion.div
       className={className}
       variants={{
         hidden: { opacity: 0, y },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
+        visible: { opacity: 1, y: 0, transition: transition.base },
       }}
     >
       {children}

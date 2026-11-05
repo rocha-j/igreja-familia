@@ -6,7 +6,14 @@
   --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
   --duration-fast: 0.3s;
   --duration-base: 0.6s;
-  --duration-slow: 1s;
+  --duration-slow: 0.9s;
+
+  /* Entrance travel + stagger (mirrored in src/motion/tokens.ts) */
+  --dist-sm: 16px;
+  --dist-md: 24px;
+  --dist-lg: 28px;
+  --stagger-tight: 0.06s;
+  --stagger-base: 0.08s;
 
   /* Single palette: Verde Musgo, Verde Oliva, Marrom, Bege, Areia */
   --bg-primary: #f2e6d3;

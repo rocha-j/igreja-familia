@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { transition } from '../../motion/tokens';
 import { AnimatedText } from '../AnimatedText/AnimatedText';
 import { Reveal } from '../Reveal/Reveal';
 import { SectionLabel } from '../SectionLabel/SectionLabel';
@@ -39,7 +40,7 @@ export function LocationSection() {
           initial={{ opacity: 0, scale: 0.97 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: false, amount: 0.3 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          transition={transition.slow}
         >
           <iframe
             title="Mapa da Igreja Família — Av. Wallace Simonsen, 414, Nova Petrópolis, São Bernardo do Campo - SP"

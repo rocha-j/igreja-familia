@@ -1,5 +1,6 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
+import { transition } from '../../motion/tokens';
 import './ParallaxImage.css';
 
 interface ParallaxImageProps {
@@ -27,7 +28,7 @@ export function ParallaxImage({ src, alt, className, strength = 40 }: ParallaxIm
         initial={{ scale: 1.08, opacity: 0 }}
         whileInView={{ scale: 1, opacity: 1 }}
         viewport={{ once: false, amount: 0.3 }}
-        transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+        transition={transition.slow}
       />
     </div>
   );
