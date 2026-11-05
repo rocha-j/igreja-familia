@@ -1,0 +1,2 @@
+# Cloudflare Pages: serve the single-page app for any route that is not a file.
+/* /index.html 200

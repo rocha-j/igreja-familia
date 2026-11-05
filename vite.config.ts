@@ -1,9 +1,13 @@
 import react from '@vitejs/plugin-react'
 import { defineConfig, type Plugin } from 'vite'
 
-const BASE = '/igreja-familia/'
+// Where the site is served from. GitHub Pages hosts it under a repo subpath
+// (the default); Cloudflare Pages serves it from the domain root, so that
+// build sets SITE_BASE=/ in the project's environment variables.
+const BASE = (process.env.SITE_BASE ?? '/igreja-familia/').replace(/^\/?/, '/').replace(/\/?$/, '/')
 // Public origin of the deployed site, used for absolute canonical/alternate URLs.
-const ORIGIN = process.env.SITE_ORIGIN ?? 'https://rocha-j.github.io'
+// Cloudflare Pages exposes the deployment's own URL as CF_PAGES_URL.
+const ORIGIN = (process.env.SITE_ORIGIN ?? process.env.CF_PAGES_URL ?? 'https://rocha-j.github.io').replace(/\/$/, '')
 const DESKTOP_URL = `${ORIGIN}${BASE}`
 const MOBILE_URL = `${ORIGIN}${BASE}m/`
 const PHONE_MEDIA = 'only screen and (max-width: 640px)'

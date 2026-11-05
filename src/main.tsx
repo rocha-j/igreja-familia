@@ -8,7 +8,7 @@ import { ScrollProvider } from './motion/ScrollProvider'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter basename="/igreja-familia">
+    <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, '') || '/'}>
       <MotionConfig reducedMotion="user">
         <ScrollProvider>
           <App />
