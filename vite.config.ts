@@ -1,13 +1,16 @@
 import react from '@vitejs/plugin-react'
 import { defineConfig, type Plugin } from 'vite'
 
+// Cloudflare's build systems set these variables (Workers Builds: WORKERS_CI,
+// Pages: CF_PAGES), so the same repository builds correctly in both places.
+const ON_CLOUDFLARE = Boolean(process.env.WORKERS_CI || process.env.CF_PAGES)
 // Where the site is served from. GitHub Pages hosts it under a repo subpath
-// (the default); Cloudflare Pages serves it from the domain root, so that
-// build sets SITE_BASE=/ in the project's environment variables.
-const BASE = (process.env.SITE_BASE ?? '/igreja-familia/').replace(/^\/?/, '/').replace(/\/?$/, '/')
+// (the default); Cloudflare serves it from the domain root. SITE_BASE overrides both.
+const BASE = (process.env.SITE_BASE ?? (ON_CLOUDFLARE ? '/' : '/igreja-familia/')).replace(/^\/?/, '/').replace(/\/?$/, '/')
 // Public origin of the deployed site, used for absolute canonical/alternate URLs.
-// Cloudflare Pages exposes the deployment's own URL as CF_PAGES_URL.
-const ORIGIN = (process.env.SITE_ORIGIN ?? process.env.CF_PAGES_URL ?? 'https://rocha-j.github.io').replace(/\/$/, '')
+// Left empty on Cloudflare unless SITE_ORIGIN (or Pages' CF_PAGES_URL) says otherwise:
+// then those links are omitted rather than pointing at the GitHub Pages copy.
+const ORIGIN = (process.env.SITE_ORIGIN ?? process.env.CF_PAGES_URL ?? (ON_CLOUDFLARE ? '' : 'https://rocha-j.github.io')).replace(/\/$/, '')
 const DESKTOP_URL = `${ORIGIN}${BASE}`
 const MOBILE_URL = `${ORIGIN}${BASE}m/`
 const PHONE_MEDIA = 'only screen and (max-width: 640px)'
@@ -26,7 +29,7 @@ function mobileEntry(): Plugin {
     transformIndexHtml: {
       order: 'pre',
       handler: (html) =>
-        html.replace(marker, `<link rel="canonical" href="${DESKTOP_URL}" />\n    <link rel="alternate" media="${PHONE_MEDIA}" href="${MOBILE_URL}" />`),
+        html.replace(marker, !ORIGIN ? '' : `<link rel="canonical" href="${DESKTOP_URL}" />\n    <link rel="alternate" media="${PHONE_MEDIA}" href="${MOBILE_URL}" />`),
     },
     generateBundle: {
       // After Vite's own HTML plugin has emitted index.html into the bundle.
