@@ -17,7 +17,6 @@ type Word = { t: string; em?: boolean };
 
 interface Cta {
   label: string;
-  go?: ModuleId;
   href?: string;
   to?: string;
 }
@@ -29,7 +28,8 @@ interface Module {
   kicker: string;
   title: Word[];
   sub: string;
-  cta: Cta;
+  /** Only external/useful actions; navigation between modules is by touch only. */
+  cta?: Cta;
   items: { key: string; node: ReactNode }[];
   bg?: string;
   map?: boolean;
@@ -174,13 +174,12 @@ export function MobilePage() {
         id: 'inicio', kind: 'bleed', bg: heroMobile, kicker: 'Bem-vindo',
         title: w('Um lugar pra chamar de lar', 5),
         sub: 'Nossas portas estão sempre abertas. Domingos às 10h e 18h30 · Quartas às 19h30.',
-        cta: { label: 'Conheça nossa história', go: 'somos' }, items: [],
+        items: [],
       },
       {
         id: 'somos', kind: 'cards', kicker: 'Quem somos',
         title: w('Amar, servir, restaurar', 2),
         sub: 'Três pilares que sustentam a nossa família.',
-        cta: { label: 'Ver programação', go: 'programacao' },
         items: pillars.map((p, i) => ({
           key: p.id,
           node: (
@@ -197,13 +196,12 @@ export function MobilePage() {
         id: 'programacao', kind: 'cards', kicker: 'Programação',
         title: next ? [{ t: 'Próximo:' }, ...next.label.split(' ').map((t) => ({ t, em: true }))] : w('Venha nos visitar', 2),
         sub: next ? `Começa ${next.when}. Deslize para ver cada encontro.` : 'Deslize para ver cada encontro.',
-        cta: { label: 'Como chegar', go: 'onde' }, items: prog,
+        items: prog,
       },
       {
         id: 'redes', kind: 'cards', kicker: 'Nossas redes',
         title: w('Fique por perto', 2),
         sub: 'Toque em uma rede para abrir.',
-        cta: { label: 'Quero contribuir', go: 'contribua' },
         items: [
           {
             key: 'redes',
@@ -285,7 +283,7 @@ export function MobilePage() {
       const st = pages.scrollTop;
       if (!skipVars) {
         secRefs.current.forEach((el, i) => {
-          if (!el) return;
+          if (!el || Math.abs(i * H - st) > 2 * H) return;
           const v = (i * H - st) / H;
           el.style.setProperty('--vp', Math.max(0, Math.min(1, v)).toFixed(3));
           el.style.setProperty('--cov', Math.max(0, Math.min(1, -v)).toFixed(3));
@@ -297,7 +295,6 @@ export function MobilePage() {
         setActive(idx);
         setMapLive(false); // leaving a module returns the map to swipe mode
         setSeen((prev) => (prev.has(idx) ? prev : new Set(prev).add(idx)));
-        try { if (navigator.userActivation?.hasBeenActive) navigator.vibrate?.(6); } catch { /* unsupported */ }
       }
     };
     const onScroll = () => { if (!raf) raf = requestAnimationFrame(frame); };
@@ -311,23 +308,13 @@ export function MobilePage() {
     };
   }, [count]);
 
-  // Horizontal scroll inside a module: --p per card (parallax) and the sub index.
+  // Horizontal scroll inside a module: only tracks the sub index (card content stays still).
   const onTrackScroll = useCallback((m: number) => {
     const tr = trackRefs.current[m];
     if (!tr || tr.children.length < 2) return;
     const a = tr.children[0] as HTMLElement;
     const b = tr.children[1] as HTMLElement;
     const stride = b.offsetLeft - a.offsetLeft || 1;
-    const center = tr.scrollLeft + tr.clientWidth / 2;
-    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    Array.from(tr.children).forEach((c) => {
-      const el = c as HTMLElement;
-      const p = (el.offsetLeft + el.offsetWidth / 2 - center) / stride;
-      if (!reduce) {
-        el.style.setProperty('--p', p.toFixed(3));
-        el.style.setProperty('--abs', Math.min(1, Math.abs(p)).toFixed(3));
-      }
-    });
     const idx = Math.max(0, Math.min(tr.children.length - 1, Math.round(tr.scrollLeft / stride)));
     setSub((prev) => (prev[m] === idx ? prev : prev.map((v, i) => (i === m ? idx : v))));
   }, []);
@@ -343,16 +330,16 @@ export function MobilePage() {
     const pages = pagesRef.current;
     const g = cv?.getContext('2d');
     if (!cv || !pages || !g) return;
-    let W = 0, H = 0, raf = 0, v = 0, last = pages.scrollTop, visible = !document.hidden;
+    let frameN = 0, W = 0, H = 0, raf = 0, v = 0, last = pages.scrollTop, visible = !document.hidden;
     let dots: { x: number; y: number; r: number; z: number; t: number }[] = [];
     const size = () => {
-      const r = cv.getBoundingClientRect(), d = Math.min(devicePixelRatio || 1, 2);
+      const r = cv.getBoundingClientRect(), d = Math.min(devicePixelRatio || 1, 1.5);
       W = r.width; H = r.height; cv.width = W * d; cv.height = H * d; g.setTransform(d, 0, 0, d, 0, 0);
-      dots = Array.from({ length: 30 }, () => ({ x: Math.random() * W, y: Math.random() * H, r: 0.6 + Math.random() * 2, z: 0.3 + Math.random() * 0.9, t: Math.random() * 6.28 }));
+      dots = Array.from({ length: 16 }, () => ({ x: Math.random() * W, y: Math.random() * H, r: 0.6 + Math.random() * 2, z: 0.3 + Math.random() * 0.9, t: Math.random() * 6.28 }));
     };
     const draw = () => {
       raf = requestAnimationFrame(draw);
-      if (!visible) return;
+      if (!visible || (frameN = (frameN + 1) % 2)) return; // ~30fps keeps the main thread free for the gesture
       const dv = Math.max(-60, Math.min(60, pages.scrollTop - last));
       last = pages.scrollTop;
       v = v * 0.88 + dv * 0.12;
@@ -397,11 +384,7 @@ export function MobilePage() {
 
   const mod = modules[active];
   const subIdx = sub[active];
-  const external = mod.cta.href;
-  const ctaLabel = mod.cta.label;
-  const onCta = (e: React.MouseEvent) => {
-    if (mod.cta.go) { e.preventDefault(); goModule(modules.findIndex((m) => m.id === mod.cta.go)); }
-  };
+  const cta = mod.cta;
 
   return (
     <div className="mx-root">
@@ -411,11 +394,11 @@ export function MobilePage() {
           <div className="counter"><b>{String(active + 1).padStart(2, '0')}</b> / {String(count).padStart(2, '0')}</div>
         </div>
 
-        <nav className="rail" aria-label="Módulos">
+        <div className="rail" aria-hidden="true">
           {modules.map((m, i) => (
-            <button key={m.id} type="button" className={i === active ? 'on' : ''} aria-label={m.kicker} onClick={() => goModule(i)} />
+            <span key={m.id} className={i === active ? 'on' : ''} />
           ))}
-        </nav>
+        </div>
 
         <div
           ref={pagesRef}
@@ -490,43 +473,29 @@ export function MobilePage() {
         </div>
 
         <footer className="dock">
-          {mod.cta.to ? (
-            <Link key={mod.id} className="cta cta--accent" to={mod.cta.to}>
-              <span className="cta__label">{ctaLabel}</span>
+          {cta?.to ? (
+            <Link key={mod.id} className="cta cta--accent" to={cta.to}>
+              <span className="cta__label">{cta.label}</span>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
             </Link>
-          ) : (
-            <a
-              key={`${mod.id}-${ctaLabel}`}
-              className="cta"
-              href={external ?? '#'}
-              {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-              onClick={onCta}
-            >
-              <span className="cta__label">{ctaLabel}</span>
+          ) : cta?.href ? (
+            <a key={`${mod.id}-${cta.label}`} className="cta" href={cta.href} target="_blank" rel="noopener noreferrer">
+              <span className="cta__label">{cta.label}</span>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
             </a>
-          )}
+          ) : null}
           <div className="nav">
-            <div className="subnav" aria-label="Itens do módulo">
+            <div className="subnav" aria-hidden="true">
               {mod.items.length > 1 ? (
                 <>
                   {mod.items.map((it, k) => (
-                    <button key={it.key} type="button" className={`dot${k === subIdx ? ' on' : ''}`} aria-label={`Item ${k + 1}`} onClick={() => goSub(active, k)} />
+                    <span key={it.key} className={`dot${k === subIdx ? ' on' : ''}`} />
                   ))}
                   <span className="subcount">{subIdx + 1}/{mod.items.length}</span>
                 </>
               ) : (
                 <span className="subcount" />
               )}
-            </div>
-            <div className="vnav">
-              <button type="button" className="arrow" aria-label="Módulo anterior" disabled={active === 0} onClick={() => goModule(active - 1)}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6" /></svg>
-              </button>
-              <button type="button" className="arrow" aria-label="Próximo módulo" disabled={active === count - 1} onClick={() => goModule(active + 1)}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg>
-              </button>
             </div>
           </div>
         </footer>

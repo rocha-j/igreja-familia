@@ -8,6 +8,15 @@
   z-index: 1;
 }
 
+/* Centered on the viewport: the global container reserves extra space on the
+   right (side rail) at large widths, which pushed this section off-center. */
+@media (min-width: 1280px) {
+  .schedule > .container {
+    padding-left: 132px;
+    padding-right: 132px;
+  }
+}
+
 .schedule__intro {
   max-width: 620px;
   margin: 0 auto;
