@@ -1,0 +1,109 @@
+.map-frame {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border: 1px solid var(--border-default);
+  border-radius: 12px;
+  background: var(--text-nav);
+  box-shadow: var(--shadow-card);
+}
+
+.map-frame__iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  /* Inactive until the visitor clicks: a map under the cursor would swallow
+     the wheel and touch scrolling of the page. */
+  pointer-events: none;
+}
+
+.map-frame.is-active .map-frame__iframe {
+  pointer-events: auto;
+}
+
+.map-frame__tint {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(160deg, rgba(123, 67, 30, 0.55), rgba(59, 64, 41, 0.7));
+  mix-blend-mode: multiply;
+}
+
+.map-frame__ping {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.map-frame__ping i {
+  position: absolute;
+  left: -60px;
+  top: -60px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 2px solid #f0b35c;
+  opacity: 0;
+}
+
+/* Three rings, played once when the map reaches the viewport. */
+.map-frame.is-pinging .map-frame__ping i {
+  animation: map-ping 2.4s var(--ease-premium) 3 both;
+}
+
+.map-frame.is-pinging .map-frame__ping i:nth-child(2) {
+  animation-delay: 0.5s;
+}
+
+.map-frame.is-pinging .map-frame__ping i:nth-child(3) {
+  animation-delay: 1s;
+}
+
+@keyframes map-ping {
+  0% {
+    transform: scale(0.15);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+.map-frame__shield {
+  position: absolute;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: rgba(42, 42, 28, 0.82);
+  color: var(--accent-contrast);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  backdrop-filter: blur(6px);
+  transition: opacity var(--duration-base) var(--ease-premium), transform var(--duration-base) var(--ease-premium);
+}
+
+.map-frame__shield:hover {
+  transform: translateX(-50%) translateY(-2px);
+}
+
+.map-frame.is-active .map-frame__shield {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .map-frame__tint,
+  .map-frame__ping {
+    display: none;
+  }
+}

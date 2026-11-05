@@ -1,5 +1,26 @@
-﻿.pillars {
-  margin-top: 96px;
+﻿.pillars-section {
+  padding-top: 0;
+}
+
+.pillars-section.is-pinned {
+  padding: 0;
+}
+
+.pillars-section.is-pinned .pillars-section__pin {
+  height: 100vh;
+  height: 100svh;
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+  padding-top: 72px;
+}
+
+.pillars-section__pin > .container {
+  width: 100%;
+}
+
+.pillars {
+  margin-top: 0;
   display: grid;
   gap: 40px;
 }
@@ -128,4 +149,11 @@
   .pillars__display {
     min-height: 220px;
   }
+}
+
+/* Scroll-driven mode: the tab bar fills with the scroll, not a timer. */
+.pillars__tab-progress--scrub {
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left;
 }

@@ -1,12 +1,46 @@
 ﻿import { motion } from 'framer-motion';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { lazy, Suspense, useLayoutEffect, useRef } from 'react';
+import heroChurch from '../../assets/heroChurch.jpg';
 import { distance, transition } from '../../motion/tokens';
+import { useMediaQuery } from '../../motion/useMediaQuery';
+import { useHeroSceneEnabled } from '../../scenes/HeroScene/useHeroSceneEnabled';
 import { AnimatedText } from '../AnimatedText/AnimatedText';
 import './HeroSection.css';
 
+gsap.registerPlugin(ScrollTrigger);
+
+// Three.js is only fetched when the WebGL Hero is actually going to run.
+const HeroScene = lazy(() => import('../../scenes/HeroScene/HeroScene'));
+
 export function HeroSection() {
+  const root = useRef<HTMLElement>(null);
+  const sceneEnabled = useHeroSceneEnabled();
+  const reduced = useMediaQuery('(prefers-reduced-motion: reduce)');
+
+  // Scrolling past the Hero lifts its text away, as if walking in through the door.
+  useLayoutEffect(() => {
+    if (reduced || !root.current) return;
+    const ctx = gsap.context(() => {
+      gsap.to('.hero__inner', {
+        yPercent: -14,
+        opacity: 0,
+        ease: 'none',
+        scrollTrigger: { trigger: root.current, start: 'top top', end: 'bottom 25%', scrub: true },
+      });
+    }, root);
+    return () => ctx.revert();
+  }, [reduced]);
+
   return (
-    <section id="hero" className="hero">
+    <section id="hero" ref={root} className="hero">
       <div className="hero__bg" />
+      {sceneEnabled && (
+        <Suspense fallback={null}>
+          <HeroScene src={heroChurch} />
+        </Suspense>
+      )}
       <div className="hero__overlay" />
 
       <div className="container hero__content">

@@ -8,10 +8,11 @@
   flex-direction: column;
   align-items: flex-start;
   height: 100%;
-  padding: 36px 28px;
+  padding: 28px;
+  min-height: 230px;
   background: var(--bg-card);
   border: 1px solid var(--border-default);
-  border-radius: 14px;
+  border-radius: 30px;
   overflow: hidden;
   /* A blurred, downward-only shadow (rather than one hugging every edge)
      reads as the card floating above the page, like a balloon. */
@@ -34,8 +35,8 @@
 
 .network-card__icon-wrap {
   position: relative;
-  width: 60px;
-  height: 60px;
+  width: 64px;
+  height: 64px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -44,12 +45,12 @@
 .network-card__icon {
   position: relative;
   z-index: 1;
-  width: 60px;
-  height: 60px;
+  width: 64px;
+  height: 64px;
   border-radius: 50%;
-  border: 1px solid var(--border-strong);
-  background: var(--bg-primary);
-  color: var(--accent);
+  border: 1px solid var(--bg-footer);
+  background: var(--bg-footer);
+  color: #f0b35c;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -58,8 +59,10 @@
 }
 
 .network-card__link:is(:hover, :focus-visible) .network-card__icon {
-  transform: scale(1.08) rotate(-6deg);
-  border-color: var(--accent);
+  transform: scale(1.08) rotate(-8deg);
+  border-color: #f0b35c;
+  background: #f0b35c;
+  color: var(--bg-footer);
 }
 
 .network-card__name {
@@ -79,7 +82,8 @@
 }
 
 .network-card__arrow {
-  margin-top: 24px;
+  margin-top: auto;
+  align-self: flex-end;
   display: flex;
   align-items: center;
   justify-content: center;

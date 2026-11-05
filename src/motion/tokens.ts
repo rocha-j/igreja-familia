@@ -27,3 +27,16 @@ export const transition = {
   base: { duration: duration.base, ease },
   slow: { duration: duration.slow, ease },
 } as const;
+
+// Scroll-driven motion (Lenis + GSAP ScrollTrigger)
+export const scroll = {
+  /** Lenis smoothing: lower is smoother/slower. */
+  lerp: 0.1,
+  /** Seconds ScrollTrigger lags behind the scrollbar when scrubbing. */
+  scrub: 0.5,
+  /** Viewport heights of scrolling consumed by a pinned story section. */
+  pinLength: 3.4,
+} as const;
+
+/** Viewport widths below which pinned scroll stories fall back to a static layout. */
+export const PIN_MIN_WIDTH = 901;

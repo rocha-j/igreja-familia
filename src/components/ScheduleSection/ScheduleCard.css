@@ -2,13 +2,12 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
+  gap: 22px;
   height: 100%;
-  padding: 44px 28px 36px;
+  padding: 28px;
   background: var(--bg-card);
   border: 1px solid var(--border-default);
-  border-radius: 14px;
+  border-radius: 30px;
   overflow: hidden;
   /* A blurred, downward-only shadow (rather than one hugging every edge)
      reads as the card floating above the page, like a balloon. */
@@ -16,31 +15,6 @@
   transition: transform var(--duration-fast) var(--ease-premium),
     border-color var(--duration-fast) var(--ease-premium),
     box-shadow var(--duration-fast) var(--ease-premium);
-}
-
-.schedule-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: var(--accent);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform var(--duration-base) var(--ease-premium);
-}
-
-.schedule-card::after {
-  content: '';
-  position: absolute;
-  top: -35%;
-  right: -25%;
-  width: 60%;
-  height: 60%;
-  background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
-  opacity: 0.07;
-  pointer-events: none;
 }
 
 /* Hover effects only on devices that truly hover: on touch screens :hover
@@ -52,50 +26,38 @@
     box-shadow: 0 38px 50px -16px rgba(60, 40, 20, 0.36);
   }
 
-  .schedule-card:hover::before {
-    transform: scaleX(1);
-  }
-
-  .schedule-card:hover .schedule-card__icon-wrap::before {
-    border-color: var(--accent);
-    transform: scale(1.05);
-  }
-
   .schedule-card:hover .schedule-card__icon-frame {
     transform: scale(1.08) rotate(-6deg);
     border-color: var(--accent);
   }
+
+  .schedule-card:hover .schedule-card__wd.is-meeting {
+    transform: translateY(-3px);
+  }
+}
+
+.schedule-card__head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
 .schedule-card__icon-wrap {
   position: relative;
-  width: 76px;
-  height: 76px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   flex-shrink: 0;
-}
-
-.schedule-card__icon-wrap::before {
-  content: '';
-  position: absolute;
-  inset: -7px;
-  border-radius: 50%;
-  border: 1px solid var(--border-default);
-  transition: border-color var(--duration-fast) var(--ease-premium),
-    transform var(--duration-fast) var(--ease-premium);
+  width: 60px;
+  height: 60px;
 }
 
 .schedule-card__icon-frame {
-  position: relative;
-  z-index: 1;
+  display: block;
   width: 100%;
   height: 100%;
   border-radius: 50%;
   overflow: hidden;
   border: 1px solid var(--border-strong);
   background: var(--bg-primary);
+  box-shadow: 0 0 0 4px var(--bg-primary);
   transition: transform var(--duration-fast) var(--ease-premium),
     border-color var(--duration-fast) var(--ease-premium);
 }
@@ -106,37 +68,141 @@
   object-fit: cover;
 }
 
-.schedule-card__divider {
-  margin-top: 22px;
-  width: 30px;
-  height: 2px;
-  border-radius: 2px;
-  background: var(--accent);
-  flex-shrink: 0;
+.schedule-card__name {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
 }
 
-.schedule-card__body {
-  margin-top: 22px;
+.schedule-card__cadence {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+/* Week strip: the current Sunday-to-Saturday with meeting days filled in. */
+.schedule-card__week {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.schedule-card__wd {
   display: flex;
-  flex: 1;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  width: 100%;
+  gap: 2px;
+  padding: 9px 0 8px;
+  border: 1px solid var(--border-default);
+  border-radius: 16px;
+  background: var(--bg-primary);
+  transition: transform var(--duration-base) var(--ease-premium),
+    background-color var(--duration-base) var(--ease-premium);
 }
 
-.schedule-card__name {
+.schedule-card__wd small {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+}
+
+.schedule-card__wd b {
   font-family: var(--font-display);
-  font-size: 20px;
-  font-weight: 800;
+  font-size: 17px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.schedule-card__wd.is-meeting {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-contrast);
+}
+
+.schedule-card__wd.is-meeting small {
+  color: rgba(250, 243, 231, 0.8);
+}
+
+/* Today is marked with a ring only. */
+.schedule-card__wd.is-today {
+  box-shadow: 0 0 0 2px var(--bg-card), 0 0 0 3px #f0b35c;
+}
+
+/* Month grid with the fourth Saturday filled in. */
+.schedule-card__month {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  font-variant-numeric: tabular-nums;
+}
+
+.schedule-card__month-head {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-bottom: 8px;
+}
+
+.schedule-card__month-head b {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.schedule-card__month-head small {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--text-secondary);
+}
+
+.schedule-card__mw {
+  padding-bottom: 4px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.schedule-card__md {
+  padding: 7px 0;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.schedule-card__md.is-meeting {
+  background: var(--accent);
+  color: var(--accent-contrast);
+  font-weight: 500;
+}
+
+.schedule-card__md.is-today {
+  box-shadow: 0 0 0 1px #f0b35c inset;
   color: var(--text-primary);
-  text-transform: uppercase;
-  letter-spacing: 0.01em;
+  font-weight: 500;
+}
+
+.schedule-card__md.is-meeting.is-today {
+  color: var(--accent-contrast);
+  box-shadow: 0 0 0 2px var(--bg-card), 0 0 0 3px #f0b35c;
 }
 
 .schedule-card__times {
-  margin-top: 18px;
-  width: 100%;
   display: flex;
   flex-direction: column;
 }
@@ -144,20 +210,15 @@
 .schedule-card__time-row {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   flex-wrap: wrap;
   gap: 10px;
-  padding: 10px 0;
+  padding: 11px 0;
   border-top: 1px solid var(--border-subtle);
 }
 
-.schedule-card__time-row:first-child {
-  border-top: none;
-  padding-top: 0;
-}
-
 .schedule-card__day {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--text-secondary);
   font-weight: 300;
 }
@@ -182,13 +243,39 @@
 
 .schedule-card__next-tag {
   flex-basis: 100%;
-  text-align: center;
   font-family: var(--font-mono);
   font-size: 10px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--accent);
   animation: next-tag-in var(--duration-base) var(--ease-premium) 0.7s backwards;
+}
+
+/* "Next meeting" box: always the card's closing line. */
+.schedule-card__next {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px 18px;
+  border-radius: 20px;
+  background: var(--bg-footer);
+  color: var(--accent-contrast);
+}
+
+.schedule-card__next small {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #f0b35c;
+}
+
+.schedule-card__next b {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
 @keyframes next-time-fill {
