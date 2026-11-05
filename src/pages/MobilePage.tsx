@@ -336,7 +336,7 @@ export function MobilePage() {
     const size = () => {
       const r = cv.getBoundingClientRect(), d = Math.min(devicePixelRatio || 1, 1.5);
       W = r.width; H = r.height; cv.width = W * d; cv.height = H * d; g.setTransform(d, 0, 0, d, 0, 0);
-      dots = Array.from({ length: 16 }, () => ({ x: Math.random() * W, y: Math.random() * H, r: 0.6 + Math.random() * 2, z: 0.3 + Math.random() * 0.9, t: Math.random() * 6.28 }));
+      dots = Array.from({ length: 24 }, () => ({ x: Math.random() * W, y: Math.random() * H, r: 0.6 + Math.random() * 2, z: 0.3 + Math.random() * 0.9, t: Math.random() * 6.28 }));
     };
     const draw = () => {
       raf = requestAnimationFrame(draw);
@@ -346,10 +346,10 @@ export function MobilePage() {
       v = v * 0.88 + dv * 0.12;
       g.clearRect(0, 0, W, H);
       for (const d of dots) {
-        d.y -= v * d.z * 1.2 + 0.18 * d.z; d.x += Math.sin(d.t) * 0.2; d.t += 0.02;
+        d.y -= v * d.z * 1.2 + 0.7 * d.z; d.x += Math.sin(d.t) * 0.5; d.t += 0.05;
         if (d.y < -10) { d.y = H + 10; d.x = Math.random() * W; }
         if (d.y > H + 10) { d.y = -10; d.x = Math.random() * W; }
-        const a = (0.22 + 0.3 * Math.sin(d.t)) * d.z;
+        const a = (0.3 + 0.35 * Math.sin(d.t)) * d.z;
         g.beginPath(); g.fillStyle = `rgba(240,179,92,${Math.max(0.05, a).toFixed(2)})`; g.arc(d.x, d.y, d.r * d.z, 0, 6.283); g.fill();
         if (Math.abs(v) > 3) {
           g.strokeStyle = `rgba(240,179,92,${Math.min(0.25, Math.abs(v) / 80).toFixed(2)})`; g.lineWidth = d.r * d.z * 0.8;

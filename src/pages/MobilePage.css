@@ -154,8 +154,8 @@
   & .times li.next { background: var(--brown); border-color: var(--brown); color: #faf3e7; }
   & .times li.next b { color: #fff; }
   & .times li.next::after { content: "PRÓXIMO"; position: absolute; top: -8px; right: 12px; font-family: var(--font-mono); font-size: 9px; letter-spacing: .12em; padding: 3px 7px; border-radius: 99px; background: var(--amber); color: var(--ink); animation: mx-pop .9s var(--ease-spring) both; }
-  /* Short phones (SE, landscape): compact the calendar card so nothing is clipped. */
-  @media (max-height: 720px) {
+  /* Phones with browser bars (~750-860px visible): compact the calendar cards so nothing is clipped. */
+  @media (max-height: 860px) {
     & .in { padding: 16px 18px 16px; }
     & .in.prog { gap: 10px; }
     & .prog .ic { width: 44px; height: 44px; border-radius: 15px; }
@@ -168,6 +168,8 @@
     & .cal__d { aspect-ratio: auto; height: 26px; font-size: 11px; }
     & .cal--month { gap: 6px; }
     & .sec--cards .info__sub { display: none; }
+    & .in.social { gap: 10px; }
+    & .nets { gap: 8px; }
   }
 
   /* ---------- Redes: um card só ---------- */
